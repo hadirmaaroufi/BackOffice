@@ -25,12 +25,12 @@ public class Product implements Serializable {
     private int price;
     private int stock;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private Set<Shop> shops;
+    /*@ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
+    private Set<Shop> shops;*/
     @ManyToOne
     private Category category;
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
+    /*@ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
     private Set<Favorite> favorites;
     @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private Set<Cart> carts;
+    private Set<Cart> carts;*/
 }
