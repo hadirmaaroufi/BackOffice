@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+//Entity Claim
 public class Claim implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
