@@ -1,5 +1,6 @@
 package tn.esprit.pidev.bns.entity.hadir;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import tn.esprit.pidev.bns.entity.omar.Supplier;
 
@@ -22,6 +23,7 @@ public class Shop implements Serializable {
     private String photo;
     private String address;
 
+    @JsonIgnore
     @ManyToOne
     private Supplier supplier;
     @ManyToMany(cascade = CascadeType.ALL)

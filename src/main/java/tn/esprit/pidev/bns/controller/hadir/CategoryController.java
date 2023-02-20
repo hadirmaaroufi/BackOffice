@@ -20,8 +20,8 @@ ICategorieService categorieService;
         return listCategorys;
     }
     @GetMapping("/retrieve-Category/{Category-id}")
-    public Category retrieveCategory(@PathVariable("Category-id") Integer contratId) {
-        return categorieService.retrieveCategory(contratId);
+    public Category retrieveCategory(@PathVariable("Category-id") Integer CategoryId) {
+        return categorieService.retrieveCategory(CategoryId);
     }
     @PostMapping("/add-Category")
     public Category addCategory(@RequestBody Category c) {
@@ -30,7 +30,7 @@ ICategorieService categorieService;
     }
 
     @DeleteMapping("/remove-Category/{Category-id}")
-    public void removeContrat(@PathVariable("Category-id") Integer categoryId) {
+    public void removeCategory(@PathVariable("Category-id") Integer categoryId) {
         categorieService.removeCategory(categoryId);
     }
     @PutMapping("/update-Category")
