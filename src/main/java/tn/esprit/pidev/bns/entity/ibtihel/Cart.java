@@ -23,3 +23,4 @@ public class Cart implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Product> products;
 }
+
