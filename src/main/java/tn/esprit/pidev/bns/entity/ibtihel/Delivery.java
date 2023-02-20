@@ -1,0 +1,31 @@
+package tn.esprit.pidev.bns.entity.ibtihel;
+
+import lombok.*;
+import tn.esprit.pidev.bns.entity.omar.Deliverer;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Set;
+
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class Delivery implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idDelivery;
+    private String address;
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    private int totalPrice;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
+    private Set<PurchaseOrder> purchaseOrders;
+    @ManyToOne
+    private Deliverer deliverer;
+}

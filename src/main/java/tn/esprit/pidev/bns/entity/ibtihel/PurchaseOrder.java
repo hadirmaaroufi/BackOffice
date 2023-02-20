@@ -1,0 +1,34 @@
+package tn.esprit.pidev.bns.entity.ibtihel;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class PurchaseOrder implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idOrder;
+    private String reference;
+    private String paymentMethod;
+    private int orderPrice;
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    private String discountCode;
+    private String address;
+    private int phoneNumber;
+    private OrderStatus commandStatus;
+
+    @OneToOne
+    private Cart cart;
+    @ManyToOne
+    private Delivery delivery;
+}
