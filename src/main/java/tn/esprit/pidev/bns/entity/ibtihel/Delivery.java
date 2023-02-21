@@ -26,6 +26,8 @@ public class Delivery implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
     private Set<PurchaseOrder> purchaseOrders;
+
+
     @ManyToOne
     private Deliverer deliverer;
 }

@@ -6,6 +6,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
+import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
+import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.PurchaseOrderRepo;
@@ -50,4 +52,36 @@ public class ServiceIbtihel implements IServiceIbtihel {
     public Cart ListCartById(Integer idCart) {
         return cartRepo.findById(idCart).get();
     }
+
+    @Override
+    public PurchaseOrder addPurchaseOrder(PurchaseOrder order) {
+        return purchaseOrderRepo.save(order);
+    }
+
+    @Override
+    public PurchaseOrder updatePurchaseOrder(PurchaseOrder order) {
+        return purchaseOrderRepo.save(order);
+    }
+
+    @Override
+    public List<PurchaseOrder> ListPurchaseOrder() {
+        return  (List<PurchaseOrder>) purchaseOrderRepo.findAll();
+    }
+
+    @Override
+    public PurchaseOrder ListOrderById(Integer idOrder) {
+        return purchaseOrderRepo.findById(idOrder).get();
+    }
+
+    @Override
+    public Delivery addDelivery(Delivery delivery) {
+        return  deliveryRepo.save(delivery);
+    }
+
+    @Override
+    public Delivery updateDelivery(Delivery delivery) {
+        return deliveryRepo.save(delivery);
+    }
+
+
 }

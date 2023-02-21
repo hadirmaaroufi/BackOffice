@@ -18,14 +18,16 @@ public class PurchaseOrder implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idOrder;
     private String reference;
-    private String paymentMethod;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
     private int orderPrice;
     @Temporal(TemporalType.DATE)
     private Date date;
     private String discountCode;
     private String address;
     private int phoneNumber;
-    private OrderStatus commandStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus ;
 
     @OneToOne
     private Cart cart;
