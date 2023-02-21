@@ -83,5 +83,21 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return deliveryRepo.save(delivery);
     }
 
+    @Override
+    public Delivery deleteDelivery(Integer idDelivery) {
+        deliveryRepo.deleteById(idDelivery);
+        return null;
+    }
+
+    @Override
+    public List<Delivery> ListDelivery() {
+        return (List<Delivery>) deliveryRepo.findAll();
+    }
+
+    @Override
+    public Delivery ListDeliveryById(Integer idDelivery) {
+        return deliveryRepo.findById(idDelivery).get();
+    }
+
 
 }

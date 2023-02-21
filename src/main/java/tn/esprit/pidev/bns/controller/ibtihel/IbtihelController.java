@@ -84,4 +84,22 @@ public class IbtihelController {
     public Delivery updateDelivery(@RequestBody Delivery delivery) {
         return serviceIbtihel.updateDelivery(delivery);
     }
+
+
+
+    @PutMapping("/deleteDelivery/{id}")
+    public Delivery deleteDelivery(@PathVariable("id") Integer idDelivery) {
+         return serviceIbtihel.deleteDelivery(idDelivery);
+    }
+
+
+    @GetMapping("/GetListDelivery")
+    public List<Delivery> ListDelivery() {
+       return serviceIbtihel.ListDelivery();
+    }
+
+    @GetMapping("/GetListDeliveryById/{id}")
+    public Delivery ListDeliveryById( @PathVariable("id") Integer idDelivery) {
+        return serviceIbtihel.ListDeliveryById(idDelivery);
+    }
 }

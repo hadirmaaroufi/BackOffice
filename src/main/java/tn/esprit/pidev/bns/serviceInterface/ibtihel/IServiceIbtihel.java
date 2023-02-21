@@ -32,4 +32,10 @@ public interface IServiceIbtihel {
 
     public Delivery addDelivery(Delivery delivery);
     public Delivery updateDelivery(Delivery delivery);
+
+    public Delivery deleteDelivery(Integer idDelivery);
+
+    List<Delivery> ListDelivery();
+
+    public Delivery ListDeliveryById(Integer idDelivery);
 }
