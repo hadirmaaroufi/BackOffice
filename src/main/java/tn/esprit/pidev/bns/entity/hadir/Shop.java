@@ -6,6 +6,8 @@ import tn.esprit.pidev.bns.entity.omar.Supplier;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,6 +28,10 @@ public class Shop implements Serializable {
     @JsonIgnore
     @ManyToOne
     private Supplier supplier;
-    @ManyToMany(cascade = CascadeType.ALL)
-    private Set<Product> products;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "shop_product",
+            joinColumns = @JoinColumn(name = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products = new ArrayList<>();
 }

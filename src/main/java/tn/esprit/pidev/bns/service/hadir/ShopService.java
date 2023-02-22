@@ -3,16 +3,22 @@ package tn.esprit.pidev.bns.service.hadir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.bns.entity.hadir.Category;
+import tn.esprit.pidev.bns.entity.hadir.Product;
 import tn.esprit.pidev.bns.entity.hadir.Shop;
+import tn.esprit.pidev.bns.repository.hadir.ProductRep;
 import tn.esprit.pidev.bns.repository.hadir.ShopRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IShopService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ShopService implements IShopService {
     @Autowired
     ShopRep shopRep;
+    @Autowired
+    ProductRep productRep;
     @Override
     public List<Shop> retrieveAllShops() {
         return (List<Shop>) shopRep.findAll();
@@ -44,5 +50,21 @@ public class ShopService implements IShopService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Shop affecterProductToShop(Integer idShop, List<Integer> idProduct) {
+        Shop shop = shopRep.findById(idShop).orElseThrow(() -> new EntityNotFoundException("shop non trouvée"));
+
+        List<Product> products = productRep.findAllById(idProduct);
+
+        //products.forEach(produit -> produit.setShops(shop));
+
+        shop.setProducts(products);
+
+        shopRep.save(shop);
+
+        return shop;
+
     }
 }

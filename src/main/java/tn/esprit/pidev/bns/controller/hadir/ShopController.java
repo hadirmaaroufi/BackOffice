@@ -37,5 +37,9 @@ public class ShopController {
     public boolean updateShop(@RequestBody Shop s) {
         return shopService.updateShop(s);
     }
-
+    @PutMapping("/{idBoutique}/produits")
+    public Shop affecterProduitsABoutique(@PathVariable Integer idBoutique, @RequestBody List<Integer> idProduits) {
+        return shopService.affecterProductToShop(idBoutique, idProduits);
+    }
 }
+

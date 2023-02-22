@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.hadir.Category;
 import tn.esprit.pidev.bns.entity.hadir.Product;
+import tn.esprit.pidev.bns.entity.hadir.Shop;
 import tn.esprit.pidev.bns.repository.hadir.CategorieRep;
 import tn.esprit.pidev.bns.repository.hadir.ProductRep;
+import tn.esprit.pidev.bns.repository.hadir.ShopRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IProductService;
 
 import java.util.List;
@@ -17,6 +19,8 @@ public class ProductService implements IProductService {
     ProductRep productRep;
     @Autowired
     CategorieRep categorieRep;
+    @Autowired
+    ShopRep shopRep;
     @Override
     public List<Product> retrieveAllProducts() {
         return (List<Product>) productRep.findAll();
@@ -54,6 +58,8 @@ public class ProductService implements IProductService {
         }
         return false;
     }
+
+
 
     /*@Override
     public void affcterProduitACategorie(Integer idCategorie, Integer idProduct) {

@@ -7,6 +7,7 @@ import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,7 +28,7 @@ public class Product implements Serializable {
     private int stock;
 
     /*@ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private Set<Shop> shops;*/
+    private List<Shop> shops;*/
     @JsonIgnore
     @ManyToOne
     private Category category;

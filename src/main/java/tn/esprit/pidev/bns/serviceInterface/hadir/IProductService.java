@@ -15,5 +15,5 @@ public interface IProductService {
     public Product retrieveProduct (Integer  idProduct);
 
     public  boolean removeProduct(Integer idProduct);
-    //public  void affcterProduitACategorie(Integer idCategorie, Integer idProduct);
+   // public  void affcterProductToShop(Integer idShop, Integer idProduct);
 }

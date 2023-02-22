@@ -15,4 +15,5 @@ public interface IShopService {
     public Shop retrieveShop (Integer  idShop);
 
     public  boolean removeShop(Integer idShop);
+    public Shop affecterProductToShop(Integer idShop, List<Integer> idProduct);
 }
