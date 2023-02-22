@@ -37,4 +37,9 @@ ICategorieService categorieService;
     public boolean updateCategory(@RequestBody Category c) {
         return categorieService.updateCategory(c);
     }
+
+    @PostMapping("/{idCategorie}/produits/{idProduit}")
+    public void affecterProduitACategorie(@PathVariable Integer idCategorie, @PathVariable Integer idProduit) {
+        categorieService.affcterProduitACategorie(idCategorie, idProduit);
+    }
 }

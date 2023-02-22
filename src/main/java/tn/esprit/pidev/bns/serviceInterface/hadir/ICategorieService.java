@@ -15,4 +15,5 @@ public interface ICategorieService {
     public Category retrieveCategory (Integer  idCategory);
 
     public  boolean removeCategory(Integer idCategory);
+    public  void affcterProduitACategorie(Integer idCategorie, Integer idProduct);
 }

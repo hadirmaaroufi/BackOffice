@@ -2,8 +2,11 @@ package tn.esprit.pidev.bns.service.hadir;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.hadir.Category;
+import tn.esprit.pidev.bns.entity.hadir.Product;
 import tn.esprit.pidev.bns.repository.hadir.CategorieRep;
+import tn.esprit.pidev.bns.repository.hadir.ProductRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.ICategorieService;
 
 import java.util.List;
@@ -12,6 +15,8 @@ import java.util.List;
 public class CategorieService implements ICategorieService {
     @Autowired
     CategorieRep categorieRep;
+    @Autowired
+    ProductRep productRep;
     @Override
     public List<Category> retrieveAllCategorys() {
         return (List<Category>) categorieRep.findAll();
@@ -44,5 +49,20 @@ public class CategorieService implements ICategorieService {
         }
         return false;
 
+    }
+
+    @Override
+    public void affcterProduitACategorie(Integer idCategorie, Integer idProduct) {
+        Category category = categorieRep.findById(idCategorie)
+                .orElseThrow(() -> new NotFoundException("Catégorie non trouvée"));
+
+        Product product = productRep.findById(idProduct)
+                .orElseThrow(() -> new NotFoundException("Produit non trouvé"));
+
+        category.getProducts().add(product);
+        product.setCategory(category);
+
+        categorieRep.save(category);
+        productRep.save(product);
     }
 }
