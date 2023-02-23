@@ -4,7 +4,6 @@ import lombok.*;
 import tn.esprit.pidev.bns.entity.hadir.Product;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -14,16 +13,17 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class Cart implements Serializable {
+public class CommandLine {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idCart;
-    private int number;
-    private int total;
+    private int idCommandeLine;
+    private int quantity;
 
-   @OneToMany(cascade = CascadeType.ALL, mappedBy="cart")
-    private Set<CommandLine> commandLines;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Product> products;
 
-
+    @ManyToOne (cascade = CascadeType.ALL)
+   private Cart cart;
 }
-

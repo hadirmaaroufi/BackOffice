@@ -31,6 +31,6 @@ public class Product implements Serializable {
     private Category category;
     @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
     private Set<Favorite> favorites;
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private Set<Cart> carts;
+  /*  @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
+    private Set<Cart> carts;*/
 }

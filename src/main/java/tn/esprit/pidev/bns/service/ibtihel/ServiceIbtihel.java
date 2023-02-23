@@ -6,9 +6,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
+import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
+import tn.esprit.pidev.bns.repository.ibtihel.CommandLineRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.PurchaseOrderRepo;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
@@ -25,6 +27,34 @@ public class ServiceIbtihel implements IServiceIbtihel {
     CartRepo cartRepo;
     DeliveryRepo deliveryRepo;
 
+    CommandLineRepo commandLineRepo;
+
+
+    @Override
+    public CommandLine addCommandLine(CommandLine commandLine) {
+        return commandLineRepo.save(commandLine);
+    }
+
+    @Override
+    public CommandLine updateCommandLine(CommandLine commandLine) {
+        return commandLineRepo.save(commandLine);
+    }
+
+    @Override
+    public CommandLine deleteCommandLine(Integer idCommandLine) {
+        commandLineRepo.deleteById(idCommandLine);
+        return null;
+    }
+
+    @Override
+    public List<CommandLine> ListCommandLine() {
+        return  (List<CommandLine>) commandLineRepo.findAll();
+    }
+
+    @Override
+    public CommandLine ListCommanLineById(Integer idCommandLine) {
+        return commandLineRepo.findById(idCommandLine).get();
+    }
 
     @Override
     public Cart addCart(Cart cart){

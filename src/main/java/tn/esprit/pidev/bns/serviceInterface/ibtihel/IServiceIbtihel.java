@@ -1,12 +1,23 @@
 package tn.esprit.pidev.bns.serviceInterface.ibtihel;
 
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
+import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 
 import java.util.List;
 
 public interface IServiceIbtihel {
+
+
+
+    //commandline
+    public CommandLine addCommandLine(CommandLine commandLine);
+    public CommandLine updateCommandLine(CommandLine commandLine);
+    public CommandLine deleteCommandLine(Integer idCommandLine);
+    List<CommandLine> ListCommandLine();
+
+    public CommandLine ListCommanLineById(Integer idCommandLine);
 
 
     //cart

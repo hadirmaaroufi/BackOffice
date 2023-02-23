@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
+import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
@@ -21,7 +22,33 @@ public class IbtihelController {
     IServiceIbtihel serviceIbtihel;
 
 
-    @PostMapping("/addCart")
+
+    @PostMapping("/addCommandLine")
+    public CommandLine addCommandLine(CommandLine commandLine) {
+        System.out.println(commandLine.getQuantity());
+        return serviceIbtihel.addCommandLine(commandLine);
+    }
+
+    @PutMapping("/updateCommandLine")
+    public CommandLine updateCommandLine(CommandLine commandLine) {
+       return serviceIbtihel.updateCommandLine(commandLine);
+    }
+
+    @PutMapping("/deleteCommandLine/{id}")
+    public CommandLine deleteCommandLine(@PathVariable("id") Integer idCommandLine) {
+    return serviceIbtihel.deleteCommandLine(idCommandLine);
+    }
+
+
+    @GetMapping("/GetListCommanLine")
+    public List<CommandLine> ListCommandLine() {
+      return  serviceIbtihel.ListCommandLine();
+    }
+    @GetMapping("/GetListCommandLineById/{id}")
+    public CommandLine ListCommanLineById(@PathVariable("id") Integer idCommandLine) {
+        return serviceIbtihel.ListCommanLineById(idCommandLine);
+    }
+   /* @PostMapping("/addCart")
     public Cart addCart(@RequestBody Cart cart){
         System.out.println(cart.getQuantity());
         return serviceIbtihel.addCart(cart);
@@ -101,5 +128,5 @@ public class IbtihelController {
     @GetMapping("/GetListDeliveryById/{id}")
     public Delivery ListDeliveryById( @PathVariable("id") Integer idDelivery) {
         return serviceIbtihel.ListDeliveryById(idDelivery);
-    }
+    }*/
 }
