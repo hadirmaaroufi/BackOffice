@@ -11,6 +11,7 @@ import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -48,12 +49,23 @@ public class IbtihelController {
     public CommandLine ListCommanLineById(@PathVariable("id") Integer idCommandLine) {
         return serviceIbtihel.ListCommanLineById(idCommandLine);
     }
-   /* @PostMapping("/addCart")
-    public Cart addCart(@RequestBody Cart cart){
-        System.out.println(cart.getQuantity());
-        return serviceIbtihel.addCart(cart);
+    @PostMapping("/saveCart/ {idCommandLine}")
+    public Cart saveCart(@RequestBody Cart cart, @PathVariable Integer idCommandLine) {
+  Cart cart1=serviceIbtihel.saveCart(cart,idCommandLine);
+  return cart1;
+
     }
 
+    @PutMapping("/assignCommandeLineToCart")
+    public void assignCommandeLineToCart(@RequestParam("idCommandLine") Integer idCommandLine,
+                                         @RequestParam("idCart") Integer idCart) {
+        System.err.println(idCommandLine);
+        System.err.println(idCart);
+        serviceIbtihel.assignCommandeLineToCart(idCommandLine,idCart);
+
+    }
+
+/*
     @PutMapping("/updateCart")
     public Cart updateCart( @RequestBody Cart cart) {
    return  serviceIbtihel.updateCart(cart);

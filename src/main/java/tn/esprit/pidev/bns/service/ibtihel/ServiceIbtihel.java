@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
@@ -15,7 +16,9 @@ import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.PurchaseOrderRepo;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -57,10 +60,37 @@ public class ServiceIbtihel implements IServiceIbtihel {
     }
 
     @Override
-    public Cart addCart(Cart cart){
+    public Cart saveCart(Cart cart, Integer idCommandLine) {
+
+
+
+        CommandLine commandLine = commandLineRepo.findById(idCommandLine).orElseThrow(()
+                -> new NotFoundException("ligne commande non trouvée"));
+        commandLine.getCart();
+        Set<CommandLine> commandLines = new HashSet<CommandLine>();
+        commandLines.add(commandLine);
+        cart.setCommandLines(commandLines);
+
+        commandLineRepo.save(commandLine);
 
         return cartRepo.save(cart);
+
+
     }
+
+
+
+
+    @Override
+    public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart) {
+        Cart cart= cartRepo.findById( idCart).get();
+        CommandLine commandLine= commandLineRepo.findById(idCommandLine).get();
+        commandLine.setCart(cart);
+        commandLineRepo.save(commandLine);
+
+    }
+
+
 
     @Override
     public Cart updateCart(Cart cart) {

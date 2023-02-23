@@ -22,7 +22,12 @@ public interface IServiceIbtihel {
 
     //cart
 
-    public Cart addCart(Cart cart);
+    public Cart saveCart(Cart cart, Integer idCommandLine);
+
+
+
+    public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart);
+
     public Cart updateCart(Cart cart);
     public Cart deleteCart(Integer idCart);
 

@@ -18,10 +18,14 @@ public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCart;
-    private int number;
     private int total;
 
-   @OneToMany(cascade = CascadeType.ALL, mappedBy="cart")
+
+
+
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="cart")
     private Set<CommandLine> commandLines;
 
 
