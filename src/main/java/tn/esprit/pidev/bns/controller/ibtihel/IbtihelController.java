@@ -65,7 +65,7 @@ public class IbtihelController {
 
     }
 
-/*
+
     @PutMapping("/updateCart")
     public Cart updateCart( @RequestBody Cart cart) {
    return  serviceIbtihel.updateCart(cart);
@@ -79,8 +79,9 @@ public class IbtihelController {
 
 
     @GetMapping("/GetListCart")
-    public List<Cart> ListCart() {
-      return serviceIbtihel.ListCart();
+    public List<Cart> getListCart() {
+        List <Cart> cartList = serviceIbtihel.ListCart();
+      return cartList;
     }
 
     @GetMapping("/GetListCartById/{id}")
@@ -140,5 +141,5 @@ public class IbtihelController {
     @GetMapping("/GetListDeliveryById/{id}")
     public Delivery ListDeliveryById( @PathVariable("id") Integer idDelivery) {
         return serviceIbtihel.ListDeliveryById(idDelivery);
-    }*/
+    }
 }
