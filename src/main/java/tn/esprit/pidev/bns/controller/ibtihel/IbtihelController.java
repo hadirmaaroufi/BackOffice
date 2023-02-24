@@ -93,6 +93,7 @@ public class IbtihelController {
 
     @GetMapping("/GetListCartById/{id}")
     public Cart ListCartById(@PathVariable("id") Integer idCart) {
+
         return serviceIbtihel.ListCartById(idCart);
     }
 
@@ -156,5 +157,13 @@ public class IbtihelController {
     @GetMapping("/GetListDeliveryById/{id}")
     public Delivery ListDeliveryById( @PathVariable("id") Integer idDelivery) {
         return serviceIbtihel.ListDeliveryById(idDelivery);
+    }
+
+    @PutMapping("/assignDeliveryToOrder")
+    public void assignDeliveryToOrder(@RequestParam("idOrder") Integer idOrder,
+                                    @RequestParam("idDelivery")  Integer idDelivery) {
+        System.err.println(idOrder);
+        System.err.println(idDelivery);
+        serviceIbtihel.assignDeliveryToOrder(idOrder,idDelivery);
     }
 }

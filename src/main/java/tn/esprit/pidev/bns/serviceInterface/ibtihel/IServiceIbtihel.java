@@ -54,4 +54,7 @@ public interface IServiceIbtihel {
     List<Delivery> ListDelivery();
 
     public Delivery ListDeliveryById(Integer idDelivery);
+
+
+    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery);
 }

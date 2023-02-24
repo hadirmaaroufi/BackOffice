@@ -159,5 +159,14 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return deliveryRepo.findById(idDelivery).get();
     }
 
+    @Override
+    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery) {
+      Delivery delivery =deliveryRepo.findById( idDelivery).get();
+      PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
+        purchaseOrder.setDelivery(delivery);
+        purchaseOrderRepo.save(purchaseOrder);
+
+    }
+
 
 }
