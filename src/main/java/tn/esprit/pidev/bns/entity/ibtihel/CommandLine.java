@@ -1,5 +1,6 @@
 package tn.esprit.pidev.bns.entity.ibtihel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import tn.esprit.pidev.bns.entity.hadir.Product;
 
@@ -24,6 +25,7 @@ public class CommandLine {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Product> products;
 
+@JsonIgnore
     @ManyToOne (cascade = CascadeType.ALL)
    private Cart cart;
 }

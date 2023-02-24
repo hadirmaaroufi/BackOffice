@@ -24,6 +24,8 @@ public class IbtihelController {
 
 
 
+    //commandline
+
     @PostMapping("/addCommandLine")
     public CommandLine addCommandLine(CommandLine commandLine) {
         System.out.println(commandLine.getQuantity());
@@ -41,7 +43,7 @@ public class IbtihelController {
     }
 
 
-    @GetMapping("/GetListCommanLine")
+    @GetMapping("/GetListCommandLine")
     public List<CommandLine> ListCommandLine() {
       return  serviceIbtihel.ListCommandLine();
     }
@@ -49,6 +51,11 @@ public class IbtihelController {
     public CommandLine ListCommanLineById(@PathVariable("id") Integer idCommandLine) {
         return serviceIbtihel.ListCommanLineById(idCommandLine);
     }
+
+
+
+    //cart
+
     @PostMapping("/saveCart/ {idCommandLine}")
     public Cart saveCart(@RequestBody Cart cart, @PathVariable Integer idCommandLine) {
   Cart cart1=serviceIbtihel.saveCart(cart,idCommandLine);
@@ -89,6 +96,11 @@ public class IbtihelController {
         return serviceIbtihel.ListCartById(idCart);
     }
 
+
+
+
+
+
     //order
 
 
@@ -113,6 +125,9 @@ public class IbtihelController {
       return serviceIbtihel.ListOrderById(idOrder);
     }
 
+
+
+    //delivery
 
     @PostMapping("/addDelivery")
     public Delivery addDelivery( @RequestBody Delivery delivery) {
