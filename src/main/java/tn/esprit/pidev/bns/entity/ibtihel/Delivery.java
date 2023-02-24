@@ -20,9 +20,17 @@ public class Delivery implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDelivery;
     private String address;
+
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date deliveryDate;
+
+    @Temporal(TemporalType.DATE)
+    private  Date arrivalDate;
+
     private int totalPrice;
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus ;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="delivery")
     private Set<PurchaseOrder> purchaseOrders;

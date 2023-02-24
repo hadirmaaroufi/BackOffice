@@ -10,10 +10,12 @@ import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
+import tn.esprit.pidev.bns.entity.omar.Deliverer;
 import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.CommandLineRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.PurchaseOrderRepo;
+import tn.esprit.pidev.bns.repository.omar.DelivererRepo;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
 import java.util.HashSet;
@@ -31,6 +33,8 @@ public class ServiceIbtihel implements IServiceIbtihel {
     DeliveryRepo deliveryRepo;
 
     CommandLineRepo commandLineRepo;
+
+    DelivererRepo delivererRepo;
 
 
     @Override
@@ -160,12 +164,64 @@ public class ServiceIbtihel implements IServiceIbtihel {
     }
 
     @Override
+    public int notstarted(int id) {
+        return deliveryRepo.notstarted(id);
+    }
+
+    @Override
+    public int delivered(int id) {
+        return deliveryRepo.delivered(id);
+    }
+
+    @Override
+    public int inProgress(int id) {
+        return deliveryRepo.inProgress(id);
+    }
+
+    @Override
+    public String availableDelivery(int id) {
+        int ns=deliveryRepo.notstarted(id);
+        int del=deliveryRepo.delivered(id);
+        int ip=deliveryRepo.inProgress(id);
+
+        float pns= ((float)ns/((float)del+(float)ip+(float)ns))*100;
+        float pdel= ((float)del/((float)del+(float)ip+(float)ns))*100;
+        float pip= ((float)ip/((float)del+(float)ip+(float)ns))*100;
+
+        String sns=String.valueOf(ns);
+        String sdel=String.valueOf(del);
+        String sip=String.valueOf(ip);
+        String t=String.valueOf(deliveryRepo.total(id));
+        return "delivery Not Started : "+sns+"  :   "+String.valueOf((int)pns)+
+                "%    delivery In Progress : "+sip+"  :  "+String.valueOf((int)pip)+"%"+
+                "%    delivery delivered : "+sdel+"  :  "+String.valueOf((int)pdel)+"% "+
+                "\n" +" Total deliveries : "+t;
+
+    }
+
+    @Override
     public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery) {
       Delivery delivery =deliveryRepo.findById( idDelivery).get();
       PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
         purchaseOrder.setDelivery(delivery);
         purchaseOrderRepo.save(purchaseOrder);
 
+    }
+
+    @Override
+    public void assignCartToOrder(Integer idOrder, Integer idCart) {
+        Cart cart =cartRepo.findById( idCart).get();
+        PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
+        purchaseOrder.setCart(cart);
+        purchaseOrderRepo.save(purchaseOrder);
+    }
+
+    @Override
+    public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer) {
+        Deliverer deliverer =delivererRepo.findById( idDeliverer).get();
+        Delivery delivery= deliveryRepo.findById(idDelivery).get();
+        delivery.setDeliverer(deliverer);
+        deliveryRepo.save(delivery);
     }
 
 

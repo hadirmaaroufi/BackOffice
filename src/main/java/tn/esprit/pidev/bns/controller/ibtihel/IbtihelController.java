@@ -166,4 +166,27 @@ public class IbtihelController {
         System.err.println(idDelivery);
         serviceIbtihel.assignDeliveryToOrder(idOrder,idDelivery);
     }
+
+
+    @PutMapping("/assignCartToOrder")
+    public void assignCartToOrder(@RequestParam("idOrder")Integer idOrder,
+                                  @RequestParam("idCart")Integer idCart) {
+        System.err.println(idOrder);
+        System.err.println(idCart);
+        serviceIbtihel.assignCartToOrder(idOrder,idCart);
+
+    }
+
+    @PutMapping("/assignDelivererToDelivery")
+    public void assignDelivererToDelivery(@RequestParam("idDelivery") Integer idDelivery,
+                                          @RequestParam("idDeliverer") Integer idDeliverer) {
+        System.err.println(idDelivery);
+        System.err.println(idDeliverer);
+        serviceIbtihel.assignDelivererToDelivery(idDelivery,idDeliverer);
+    }
+
+    @GetMapping("/availableDelivery/{id}")
+    public String availableDelivery(@PathVariable("id") int id) {
+        return serviceIbtihel.availableDelivery(id);
+    }
 }

@@ -55,6 +55,16 @@ public interface IServiceIbtihel {
 
     public Delivery ListDeliveryById(Integer idDelivery);
 
+    public int notstarted(int id);
+    public int delivered(int id);
+    public int inProgress(int id);
+
+    String availableDelivery(int id);
+
+
 
     public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery);
+    public void assignCartToOrder(Integer idOrder, Integer idCart);
+
+    public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer);
 }

@@ -30,8 +30,7 @@ public class PurchaseOrder implements Serializable {
     private String address;
     private int phoneNumber;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus ;
+
 
     @OneToOne
     private Cart cart;
