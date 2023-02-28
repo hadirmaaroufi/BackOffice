@@ -57,9 +57,10 @@ public class IbtihelController {
     //cart
 
     @PostMapping("/saveCart/ {idCommandLine}")
-    public Cart saveCart(@RequestBody Cart cart, @PathVariable Integer idCommandLine) {
+    public Cart saveCart(@RequestBody Cart cart, @PathVariable("idCommandLine") Integer idCommandLine) {
   Cart cart1=serviceIbtihel.saveCart(cart,idCommandLine);
   return cart1;
+
 
     }
 
@@ -105,8 +106,12 @@ public class IbtihelController {
     //order
 
 
-    @PostMapping("/addOrder")
-    public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder order){
+    @PostMapping("/addOrder/{idDelivery}/{idCart}")
+    public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder order, @PathVariable ("idDelivery") int idDelivery,
+                                          @PathVariable ("idCart") int idCart )
+    {
+        order.setDelivery(serviceIbtihel.ListDeliveryById(idDelivery));
+        order.setCart(serviceIbtihel.ListCartById(idCart));
        return  serviceIbtihel.addPurchaseOrder(order);
     }
 
@@ -159,23 +164,10 @@ public class IbtihelController {
         return serviceIbtihel.ListDeliveryById(idDelivery);
     }
 
-    @PutMapping("/assignDeliveryToOrder")
-    public void assignDeliveryToOrder(@RequestParam("idOrder") Integer idOrder,
-                                    @RequestParam("idDelivery")  Integer idDelivery) {
-        System.err.println(idOrder);
-        System.err.println(idDelivery);
-        serviceIbtihel.assignDeliveryToOrder(idOrder,idDelivery);
-    }
 
 
-    @PutMapping("/assignCartToOrder")
-    public void assignCartToOrder(@RequestParam("idOrder")Integer idOrder,
-                                  @RequestParam("idCart")Integer idCart) {
-        System.err.println(idOrder);
-        System.err.println(idCart);
-        serviceIbtihel.assignCartToOrder(idOrder,idCart);
 
-    }
+
 
     @PutMapping("/assignDelivererToDelivery")
     public void assignDelivererToDelivery(@RequestParam("idDelivery") Integer idDelivery,

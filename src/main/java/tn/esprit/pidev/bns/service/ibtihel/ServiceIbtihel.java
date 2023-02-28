@@ -1,5 +1,8 @@
 package tn.esprit.pidev.bns.service.ibtihel;
 
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -132,6 +135,7 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
          purchaseOrderRepo.save(order);
          sendmail(order);
+         sendSMS(order);
         return order;
     }
 
@@ -212,22 +216,8 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
     }
 
-    @Override
-    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery) {
-      Delivery delivery =deliveryRepo.findById( idDelivery).get();
-      PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
-        purchaseOrder.setDelivery(delivery);
-        purchaseOrderRepo.save(purchaseOrder);
 
-    }
 
-    @Override
-    public void assignCartToOrder(Integer idOrder, Integer idCart) {
-        Cart cart =cartRepo.findById( idCart).get();
-        PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
-        purchaseOrder.setCart(cart);
-        purchaseOrderRepo.save(purchaseOrder);
-    }
 
     @Override
     public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer) {
@@ -281,6 +271,28 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
     }
 
+
+    ///// ******** SMS ***********
+
+  @Autowired
+    public static final String ACCOUNT_SID = "AC62f2665fc874d6b5b8e686e25c25e442";
+    @Autowired
+    public static final String AUTH_TOKEN = "241967025561bd056e77cfc678976411";
+
+
+
+    public  void sendSMS(PurchaseOrder order) {
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        Message message = Message.creator(new PhoneNumber(order.getPhoneNumber()),
+                new PhoneNumber("+12766002091"),
+                "New Order has been added "+"\r"+"Reference : "+order.getReference()+
+                        "\r"+"price : "+order.getOrderPrice()+
+                        "\r"+" Date :"+order.getDate()+
+                        "\r"+"Adresse :"+order.getAddress()).create();
+
+        System.out.println(message.getSid());
+    }
 
 
 

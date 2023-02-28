@@ -1,5 +1,6 @@
 package tn.esprit.pidev.bns.entity.ibtihel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,13 +29,15 @@ public class PurchaseOrder implements Serializable {
     private Date date;
     private String discountCode;
     private String address;
-    private int phoneNumber;
+    private String phoneNumber;
     private String mail;
 
 
 
     @OneToOne
     private Cart cart;
+
+    @JsonIgnore
     @ManyToOne
     private Delivery delivery;
 }

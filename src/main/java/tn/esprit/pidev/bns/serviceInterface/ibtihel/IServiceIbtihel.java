@@ -63,8 +63,7 @@ public interface IServiceIbtihel {
 
 
 
-    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery);
-    public void assignCartToOrder(Integer idOrder, Integer idCart);
+
 
     public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer);
 }
