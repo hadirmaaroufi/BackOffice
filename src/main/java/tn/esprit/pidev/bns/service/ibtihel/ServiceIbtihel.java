@@ -4,6 +4,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
@@ -20,6 +25,7 @@ import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 @Service
@@ -28,12 +34,16 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ServiceIbtihel implements IServiceIbtihel {
 
+
+    @Autowired
     PurchaseOrderRepo purchaseOrderRepo;
+    @Autowired
     CartRepo cartRepo;
+    @Autowired
     DeliveryRepo deliveryRepo;
-
+@Autowired
     CommandLineRepo commandLineRepo;
-
+@Autowired
     DelivererRepo delivererRepo;
 
 
@@ -119,7 +129,10 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
     @Override
     public PurchaseOrder addPurchaseOrder(PurchaseOrder order) {
-        return purchaseOrderRepo.save(order);
+
+         purchaseOrderRepo.save(order);
+         sendmail(order);
+        return order;
     }
 
     @Override
@@ -223,6 +236,56 @@ public class ServiceIbtihel implements IServiceIbtihel {
         delivery.setDeliverer(deliverer);
         deliveryRepo.save(delivery);
     }
+
+
+
+    //mail ***********
+
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+
+    @Autowired
+    public void EmailService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
+    public void sendmail(PurchaseOrder order)
+    {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("ibtihelaouni90@gmail.com");
+        mailSender.setPassword("enuzwoibobyecfjr");
+
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        mailSender.setJavaMailProperties(properties);
+        String from = mailSender.getUsername();
+        String to = order.getMail();
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(from);
+        message.setTo(to);
+        message.setSubject("New order");
+        message.setText("New order has been added"+"\r"+"Reference : "+order.getReference()+
+                "\r"+"price : "+order.getOrderPrice()+
+                "\r"+" Date :"+order.getDate()+
+                "\r"+"Adresse :"+order.getAddress());
+
+        mailSender.send(message);
+
+    }
+
+
+
+
+
+
 
 
 }

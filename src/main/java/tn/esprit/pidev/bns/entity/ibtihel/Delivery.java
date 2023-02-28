@@ -29,6 +29,7 @@ public class Delivery implements Serializable {
 
     private int totalPrice;
 
+
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus ;
 

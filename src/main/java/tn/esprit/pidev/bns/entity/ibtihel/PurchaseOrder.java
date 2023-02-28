@@ -29,6 +29,7 @@ public class PurchaseOrder implements Serializable {
     private String discountCode;
     private String address;
     private int phoneNumber;
+    private String mail;
 
 
 
