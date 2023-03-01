@@ -19,8 +19,15 @@ public class ProductController {
     IProductService productService;
 
     @GetMapping("/retrieve-all-Products")
-    public List<Product> getProducts() {
+    public List<Product> getProducts(@RequestParam("currncy")String currncy) {
         List<Product> listProducts = productService.retrieveAllProducts();
+        for(Product product:listProducts){
+            ConversionCurrency convCurr = new ConversionCurrency();
+            convCurr.setFrom("TND");
+            convCurr.setTo(currncy);
+            convCurr.setValue(product.getPrice());
+            product.setPrice(convertCurrencies(convCurr).getBody());
+        }
         return listProducts;
     }
 

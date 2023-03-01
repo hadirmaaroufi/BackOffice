@@ -30,6 +30,10 @@ public class ExchangeRateClient {
        try {
            RestTemplate restTemplate = new RestTemplate();
            CurrencyDTO forObject = restTemplate.getForObject("http://data.fixer.io/api/latest?access_key=0a5f28039a528338c606d27c78c40e3b", CurrencyDTO.class);
+           if (currencyRepository.count() > 0) {
+               // supprimer les anciennes valeurs
+               currencyRepository.deleteAll();
+           }
            forObject.getRates().forEach((key, value) -> {
                Currency currency = new Currency(key, value);
                this.currencyRepository.save(currency);

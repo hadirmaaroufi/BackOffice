@@ -26,7 +26,7 @@ public class Product implements Serializable {
     @Lob
     private byte[] image;
     private String description;
-    private int price;
+    private double price;
     private int stock;
 
     @JsonIgnore
