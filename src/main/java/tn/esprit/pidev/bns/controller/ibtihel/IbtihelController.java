@@ -12,7 +12,9 @@ import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
 import javax.websocket.server.PathParam;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -24,7 +26,7 @@ public class IbtihelController {
 
 
 
-    //commandline
+    ////////commandline
 
     @PostMapping("/addCommandLine")
     public CommandLine addCommandLine(CommandLine commandLine) {
@@ -54,13 +56,26 @@ public class IbtihelController {
 
 
 
-    //cart
+
+
+////// add product to commandLine
+    @PostMapping("/products/{idCommandeLine}/{idProduct}")
+    public CommandLine addToCommandLine(@PathVariable ("idCommandeLine")int idCommandeLine,
+                                        @PathVariable ("idProduct")int idProduct) {
+        return serviceIbtihel.addProductToCommandLine(idCommandeLine, idProduct);
+    }
+
+
+
+
+
+
+    ////////cart
 
     @PostMapping("/saveCart/ {idCommandLine}")
     public Cart saveCart(@RequestBody Cart cart, @PathVariable("idCommandLine") Integer idCommandLine) {
-  Cart cart1=serviceIbtihel.saveCart(cart,idCommandLine);
-  return cart1;
-
+         Cart cart1=serviceIbtihel.saveCart(cart,idCommandLine);
+          return cart1;
 
     }
 
@@ -70,7 +85,6 @@ public class IbtihelController {
         System.err.println(idCommandLine);
         System.err.println(idCart);
         serviceIbtihel.assignCommandeLineToCart(idCommandLine,idCart);
-
     }
 
 
@@ -103,7 +117,10 @@ public class IbtihelController {
 
 
 
-    //order
+
+
+
+    //////////order
 
 
     @PostMapping("/addOrder/{idCart}")
@@ -132,11 +149,16 @@ public class IbtihelController {
 
 
 
-    //delivery
 
+
+
+   ////////delivery
+ //hethi bech nbadalha ba3d kima mta l order
     @PostMapping("/addDelivery")
-    public Delivery addDelivery( @RequestBody Delivery delivery) {
-        return  serviceIbtihel.addDelivery(delivery);
+    public Delivery addDelivery( @RequestBody Delivery delivery)
+                                {
+
+        return serviceIbtihel.addDelivery(delivery);
     }
 
 
@@ -165,15 +187,23 @@ public class IbtihelController {
 
 
 
-
-
-
     @PutMapping("/assignDelivererToDelivery")
     public void assignDelivererToDelivery(@RequestParam("idDelivery") Integer idDelivery,
                                           @RequestParam("idDeliverer") Integer idDeliverer) {
         System.err.println(idDelivery);
         System.err.println(idDeliverer);
         serviceIbtihel.assignDelivererToDelivery(idDelivery,idDeliverer);
+    }
+
+
+    @PutMapping("/assignDeliveryToOrder")
+    public void assignDeliveryToOrder(@RequestParam ("idOrder") Integer idOrder,
+                                      @RequestParam("idDelivery") Integer idDelivery) {
+
+        System.err.println(idOrder);
+        System.err.println(idDelivery);
+        serviceIbtihel.assignDeliveryToOrder(idOrder,idDelivery);
+
     }
 
     @GetMapping("/availableDelivery/{id}")

@@ -25,7 +25,7 @@ public class CommandLine {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Product> products;
 
-@JsonIgnore
-    @ManyToOne (cascade = CascadeType.ALL)
+   @JsonIgnore
+   @ManyToOne (cascade = CascadeType.ALL)
    private Cart cart;
 }

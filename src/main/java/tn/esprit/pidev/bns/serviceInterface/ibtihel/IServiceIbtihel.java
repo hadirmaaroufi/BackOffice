@@ -66,4 +66,8 @@ public interface IServiceIbtihel {
 
 
     public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer);
+    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery);
+
+
+    public CommandLine addProductToCommandLine(int idCommandLine, int IdProduct);
 }

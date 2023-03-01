@@ -14,11 +14,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
+import tn.esprit.pidev.bns.entity.hadir.Product;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
 import tn.esprit.pidev.bns.entity.omar.Deliverer;
+import tn.esprit.pidev.bns.repository.hadir.ProductRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.CommandLineRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
@@ -48,8 +50,12 @@ public class ServiceIbtihel implements IServiceIbtihel {
     CommandLineRepo commandLineRepo;
 @Autowired
     DelivererRepo delivererRepo;
+@Autowired
+    ProductRepo productRepo;
 
 
+
+// ////commandLine //////
     @Override
     public CommandLine addCommandLine(CommandLine commandLine) {
         return commandLineRepo.save(commandLine);
@@ -76,6 +82,13 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return commandLineRepo.findById(idCommandLine).get();
     }
 
+
+
+
+
+
+
+    /// cart ///////////////////
     @Override
     public Cart saveCart(Cart cart, Integer idCommandLine) {
 
@@ -96,8 +109,6 @@ public class ServiceIbtihel implements IServiceIbtihel {
     }
 
 
-
-
     @Override
     public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart) {
         Cart cart= cartRepo.findById( idCart).get();
@@ -106,7 +117,6 @@ public class ServiceIbtihel implements IServiceIbtihel {
         commandLineRepo.save(commandLine);
 
     }
-
 
 
     @Override
@@ -130,6 +140,15 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return cartRepo.findById(idCart).get();
     }
 
+
+
+
+
+
+
+
+
+    //// order ////////
     @Override
     public PurchaseOrder addPurchaseOrder(PurchaseOrder order) {
 
@@ -153,9 +172,14 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return purchaseOrderRepo.findById(idOrder).get();
     }
 
+
+
+
+
+    /////// Delivery ////////
+
     @Override
     public Delivery addDelivery(Delivery delivery) {
-
                 deliveryRepo.save(delivery);
                 sendSMS(delivery);
                 return delivery;
@@ -219,8 +243,6 @@ public class ServiceIbtihel implements IServiceIbtihel {
     }
 
 
-
-
     @Override
     public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer) {
         Deliverer deliverer =delivererRepo.findById( idDeliverer).get();
@@ -228,6 +250,33 @@ public class ServiceIbtihel implements IServiceIbtihel {
         delivery.setDeliverer(deliverer);
         deliveryRepo.save(delivery);
     }
+
+    @Override
+    public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery) {
+        Delivery delivery= deliveryRepo.findById(idDelivery).get();
+        PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).get();
+        purchaseOrder.setDelivery(delivery);
+        purchaseOrderRepo.save(purchaseOrder);
+
+    }
+
+
+
+
+    /////add product to commandline//////
+    @Override
+    public CommandLine addProductToCommandLine(int idCommandLine, int idProduct) {
+        CommandLine commandLine = commandLineRepo.findById(idCommandLine).get();
+        Product product = productRepo.findById(idProduct).get();
+        commandLine.getProducts();
+        product.setStock(product.getStock()-1);
+        commandLine.setQuantity(commandLine.getQuantity()+1);
+        return commandLineRepo.save(commandLine);
+    }
+
+
+
+
 
 
 
