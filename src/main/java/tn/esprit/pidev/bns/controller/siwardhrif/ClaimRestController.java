@@ -4,9 +4,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.bns.entity.siwardhrif.Claim;
+import tn.esprit.pidev.bns.repository.siwardhrif.ClaimRepository;
 import tn.esprit.pidev.bns.serviceInterface.siwardhrif.IClaimService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,10 +25,26 @@ public class ClaimRestController {
     @Autowired
     IClaimService claimService;
 
+    public static String uploadDirectory=System.getProperty("user.dir")+"/src/main/resources/imagedata";
+
+    @Autowired
+    private ClaimRepository claimRepository;
+
     //http://localhost:9000/bns/claim/add-claim
     @PostMapping("/addclaim")
-    public Claim createClaim(@RequestBody Claim c) {
+    @ResponseBody
+    public Claim createClaim(Claim c , @RequestParam("img")MultipartFile file) {
+        StringBuilder fileNames =new StringBuilder();
+        String filename=c.getIdClaim() + file.getOriginalFilename();
+        Path fileNameAndPath = Paths.get(uploadDirectory,filename);
 
+        try {
+            Files.write(fileNameAndPath, file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        c.setCfile(filename);
         Claim claim = claimService.createClaim(c);
         return claim;
     }

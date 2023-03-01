@@ -2,6 +2,8 @@ package tn.esprit.pidev.bns.entity.siwardhrif;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import tn.esprit.pidev.bns.entity.omar.Client;
 
 import javax.persistence.*;

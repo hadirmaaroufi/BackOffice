@@ -16,6 +16,7 @@ public class ClaimServiceImpl implements IClaimService {
         @Autowired
         private ClaimRepository claimRepository;
 
+
         public Claim createClaim(Claim c) {
             c.setCreationDate(new Date());
             c.setTreated(false);

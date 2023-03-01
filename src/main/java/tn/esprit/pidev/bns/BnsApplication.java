@@ -15,6 +15,8 @@ public class BnsApplication {
 
 	public static void main(String[] args) {
 
+		new File(ClaimRestController.uploadDirectory).mkdir();
+
 		SpringApplication.run(BnsApplication.class, args);
 	}
 
