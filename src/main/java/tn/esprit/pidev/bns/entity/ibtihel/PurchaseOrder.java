@@ -23,6 +23,7 @@ public class PurchaseOrder implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+
     private int orderPrice;
 
     @Temporal(TemporalType.DATE)

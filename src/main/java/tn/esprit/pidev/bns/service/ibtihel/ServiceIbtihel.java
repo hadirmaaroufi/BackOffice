@@ -135,7 +135,6 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
          purchaseOrderRepo.save(order);
          sendmail(order);
-         sendSMS(order);
         return order;
     }
 
@@ -156,7 +155,10 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
     @Override
     public Delivery addDelivery(Delivery delivery) {
-        return  deliveryRepo.save(delivery);
+
+                deliveryRepo.save(delivery);
+                sendSMS(delivery);
+                return delivery;
     }
 
     @Override
@@ -281,15 +283,19 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
 
 
-    public  void sendSMS(PurchaseOrder order) {
+    public  void sendSMS(Delivery delivery) {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-        Message message = Message.creator(new PhoneNumber(order.getPhoneNumber()),
+        Message message = Message.creator(new PhoneNumber(delivery.getPhoneNumber()),
                 new PhoneNumber("+12766002091"),
-                "New Order has been added "+"\r"+"Reference : "+order.getReference()+
-                        "\r"+"price : "+order.getOrderPrice()+
-                        "\r"+" Date :"+order.getDate()+
-                        "\r"+"Adresse :"+order.getAddress()).create();
+                "New Delivery has been added "+
+                        "\r"+"Delivery Date : "+delivery.getDeliveryDate()+
+                        "\r"+" Arrival  Date :"+delivery.getArrivalDate()+
+                        "\r"+"Adresse :"+delivery.getAddress()+
+                        "\r"+"Total price :"+delivery.getTotalPrice()+
+                        "\r"+"Delivery Status :"+delivery.getDeliveryStatus()
+
+        ).create();
 
         System.out.println(message.getSid());
     }

@@ -106,11 +106,10 @@ public class IbtihelController {
     //order
 
 
-    @PostMapping("/addOrder/{idDelivery}/{idCart}")
-    public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder order, @PathVariable ("idDelivery") int idDelivery,
+    @PostMapping("/addOrder/{idCart}")
+    public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder order,
                                           @PathVariable ("idCart") int idCart )
     {
-        order.setDelivery(serviceIbtihel.ListDeliveryById(idDelivery));
         order.setCart(serviceIbtihel.ListCartById(idCart));
        return  serviceIbtihel.addPurchaseOrder(order);
     }

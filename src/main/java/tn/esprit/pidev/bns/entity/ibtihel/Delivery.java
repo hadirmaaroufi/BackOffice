@@ -28,7 +28,7 @@ public class Delivery implements Serializable {
     private  Date arrivalDate;
 
     private int totalPrice;
-
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus ;
