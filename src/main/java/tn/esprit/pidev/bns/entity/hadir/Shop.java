@@ -28,10 +28,10 @@ public class Shop implements Serializable {
     @JsonIgnore
     @ManyToOne
     private Supplier supplier;
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "shop_product",
+    //@JsonIgnore
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    /*@JoinTable(name = "shop_product",
             joinColumns = @JoinColumn(name = "shop_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+            inverseJoinColumns = @JoinColumn(name = "product_id"))*/
     private List<Product> products = new ArrayList<>();
 }

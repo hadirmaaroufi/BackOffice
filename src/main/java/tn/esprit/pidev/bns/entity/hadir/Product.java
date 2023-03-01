@@ -22,18 +22,22 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idProduct;
     private String reference;
-    private String photo;
+    private String name;
+    @Lob
+    private byte[] image;
     private String description;
     private int price;
     private int stock;
 
-    /*@ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private List<Shop> shops;*/
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
+    private List<Shop> shops;
     @JsonIgnore
     @ManyToOne
     private Category category;
     /*@ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
-    private Set<Favorite> favorites;
+    private Set<Favorite> favorites;*/
+    /*@JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy="products")
     private Set<Cart> carts;*/
 }

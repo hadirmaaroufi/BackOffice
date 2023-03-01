@@ -55,15 +55,9 @@ public class ShopService implements IShopService {
     @Override
     public Shop affecterProductToShop(Integer idShop, List<Integer> idProduct) {
         Shop shop = shopRep.findById(idShop).orElseThrow(() -> new EntityNotFoundException("shop non trouvée"));
-
         List<Product> products = productRep.findAllById(idProduct);
-
-        //products.forEach(produit -> produit.setShops(shop));
-
-        shop.setProducts(products);
-
+        shop.getProducts().addAll(products); // Ajoute les nouveaux produits à la liste existante
         shopRep.save(shop);
-
         return shop;
 
     }
