@@ -63,6 +63,7 @@ public class OrderService implements IOrder {
 
     @Override
     public List<PurchaseOrder> ListPurchaseOrder() {
+
         return  (List<PurchaseOrder>) purchaseOrderRepo.findAll();
     }
 
@@ -127,6 +128,10 @@ public class OrderService implements IOrder {
 
     /////////////// Payment STRIPE ///////
 
+
+
+
+    //incription lel created wel user
     @Override
     public Payment payment(int idUser, int idOrder, Payment p) throws StripeException {
 
@@ -153,6 +158,7 @@ public class OrderService implements IOrder {
         String id;
         Stripe.apiKey = "sk_test_51MhUkfKKTmwWBHpLis6pDnCyZje6jrMcCx94yEbKPZjaZvvROd1PLzbEouw4wQnkgUxXkS3ZuKRKGnDe4951Mzhv004MUWaF0f";
         Map<String, Object> chargeParams = new HashMap<>();
+        //calcul tva
         chargeParams.put("amount", Math.round(TotalOrdersTVA(idOrder)));
         chargeParams.put("currency", "eur");
         chargeParams.put("source", "tok_visa"); // ^ obtained with Stripe.js
