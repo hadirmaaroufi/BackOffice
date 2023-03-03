@@ -43,6 +43,7 @@ public class PurchaseOrder implements Serializable {
     @ManyToOne
     private Delivery delivery;
 
+    @JsonIgnore
     @OneToOne
     private Payment payment;
 }
