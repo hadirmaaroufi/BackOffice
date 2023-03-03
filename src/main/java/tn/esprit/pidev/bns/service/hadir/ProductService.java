@@ -150,8 +150,8 @@ public class ProductService implements IProductService {
 
         String countryCode = response.getCountry().getIsoCode();
         Locale locale = new Locale("", countryCode);
-        java.util.Currency currency = java.util.Currency.getInstance(locale);
-        location.put("currency", currency.getCurrencyCode());
+        java.util.Currency DeviseLoc = java.util.Currency.getInstance(locale);
+        location.put("DeviseLoc", DeviseLoc.getCurrencyCode());
         return location;
     }
 

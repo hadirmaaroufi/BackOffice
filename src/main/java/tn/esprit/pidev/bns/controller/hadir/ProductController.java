@@ -35,12 +35,14 @@ public class ProductController {
     //taux et date pour la classe TVA nestha9 requette taamali tri taa table tva b akber date
 
     @GetMapping("/retrieve-all-Products")
-    public List<Product> getProducts(@RequestParam(name = "currency", required = false)String currency) {
+    public List<Product> getProducts(@RequestParam(name = "currency", required = false)String currency,HttpServletRequest request) throws IOException, GeoIp2Exception {
+        Map<String, String> location = productService.getClientLocation(request);
+        String DeviseLoc = location.get("DeviseLoc");
         List<Product> listProducts = productService.retrieveAllProducts();
         if (currency != null) {
             for(Product product : listProducts) {
                 ConversionCurrency convCurr = new ConversionCurrency();
-                convCurr.setFrom("TND");
+                convCurr.setFrom(DeviseLoc);
                 convCurr.setTo(currency);
                 convCurr.setValue(product.getPrice());
                 product.setPrice(convertCurrencies(convCurr).getBody());
@@ -73,13 +75,6 @@ public class ProductController {
         Product p = productService.addProduct(product, idCategorie);
         return p;
     }
-
-    /*@PostMapping("/currency")
-    public Currency convertCurrency(@RequestBody CurrencyRequest currency) {
-        return productService.currencyConverter(
-                new Currency(currency.getCurrencyLabelInput(),currency.getCurrencyValueInput()),
-                new Currency(currency.getCurrencyLabelOutput(),currency.getCurrencyValueOutput()));
-    }*/
 
     @DeleteMapping("/remove-Product/{Product-id}")
     public void removeProduct(@PathVariable("Product-id") Integer idProduct) {
@@ -123,25 +118,8 @@ public class ProductController {
         String clientIp = productService.getClientIp(request);
         response.put("clientIp", clientIp);
         return response;
-    }*/
-    /*@GetMapping("/client-ip")
-    public String getClientIp(HttpServletRequest request) {
-        return productService.getClientIp(request);
-    }*/
-    /*@GetMapping("/client-location")
-    public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
-        String clientIp = productService.getClientIp(request);
-        DatabaseReader reader = new DatabaseReader.Builder(new File("C:/GeoLite2-City.mmdb")).build();
-        InetAddress ipAddress = InetAddress.getByName(clientIp);
-        CityResponse response = reader.city(ipAddress);
-        Map<String, String> location = new HashMap<>();
-        location.put("country", response.getCountry().getName());
-        location.put("region", response.getMostSpecificSubdivision().getName());
-        location.put("city", response.getCity().getName());
-        location.put("latitude", response.getLocation().getLatitude().toString());
-        location.put("longitude", response.getLocation().getLongitude().toString());
-        return location;
-    }*/
+
+     */
     @GetMapping("/client-location")
     public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
 
