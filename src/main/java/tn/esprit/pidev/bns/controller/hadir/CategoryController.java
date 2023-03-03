@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.hadir.Category;
 import tn.esprit.pidev.bns.serviceInterface.hadir.ICategorieService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -41,5 +42,9 @@ ICategorieService categorieService;
     @PostMapping("/{idCategorie}/produits/{idProduit}")
     public void affecterProduitACategorie(@PathVariable Integer idCategorie, @PathVariable Integer idProduit) {
         categorieService.affcterProduitACategorie(idCategorie, idProduit);
+    }
+    @GetMapping("/client-ip")
+    public String getClientIp(HttpServletRequest request) {
+        return categorieService.getClientIp(request);
     }
 }

@@ -1,32 +1,50 @@
 package tn.esprit.pidev.bns.controller.hadir;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.bns.entity.hadir.*;
+import tn.esprit.pidev.bns.entity.hadir.Currency;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IProductService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/Product")
 public class ProductController {
     IProductService productService;
+    //taux et date pour la classe TVA nestha9 requette taamali tri taa table tva b akber date
 
     @GetMapping("/retrieve-all-Products")
-    public List<Product> getProducts(@RequestParam("currncy")String currncy) {
+    public List<Product> getProducts(@RequestParam(name = "currency", required = false)String currency) {
         List<Product> listProducts = productService.retrieveAllProducts();
-        for(Product product:listProducts){
-            ConversionCurrency convCurr = new ConversionCurrency();
-            convCurr.setFrom("TND");
-            convCurr.setTo(currncy);
-            convCurr.setValue(product.getPrice());
-            product.setPrice(convertCurrencies(convCurr).getBody());
+        if (currency != null) {
+            for(Product product : listProducts) {
+                ConversionCurrency convCurr = new ConversionCurrency();
+                convCurr.setFrom("TND");
+                convCurr.setTo(currency);
+                convCurr.setValue(product.getPrice());
+                product.setPrice(convertCurrencies(convCurr).getBody());
+            }
         }
         return listProducts;
     }
@@ -89,6 +107,45 @@ public class ProductController {
     @RequestMapping(value = "/currencies", produces = { "application/json" }, method = RequestMethod.GET)
     public ResponseEntity<List<Currency>> getAllCurrencies() {
         return new ResponseEntity<>(this.productService.getAllCurrencies(), HttpStatus.OK);
+    }
+    @PutMapping("/promotion/{id}/{pourcentage}")
+    @ResponseBody
+    public void promotion(@PathVariable("id") Integer id, @PathVariable("pourcentage") int pourcentage) {
+        Product productpromotion = productService.retrieveProduct(id);
+        double price = (double) productpromotion.getPrice();
+        double newprice= price*(100-pourcentage)/100;
+        productpromotion.setPrice(newprice);
+        productService.updateProduct(productpromotion);
+    }
+    /*@GetMapping("/")
+    public Map<String, String> index(HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+        String clientIp = productService.getClientIp(request);
+        response.put("clientIp", clientIp);
+        return response;
+    }*/
+    /*@GetMapping("/client-ip")
+    public String getClientIp(HttpServletRequest request) {
+        return productService.getClientIp(request);
+    }*/
+    /*@GetMapping("/client-location")
+    public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
+        String clientIp = productService.getClientIp(request);
+        DatabaseReader reader = new DatabaseReader.Builder(new File("C:/GeoLite2-City.mmdb")).build();
+        InetAddress ipAddress = InetAddress.getByName(clientIp);
+        CityResponse response = reader.city(ipAddress);
+        Map<String, String> location = new HashMap<>();
+        location.put("country", response.getCountry().getName());
+        location.put("region", response.getMostSpecificSubdivision().getName());
+        location.put("city", response.getCity().getName());
+        location.put("latitude", response.getLocation().getLatitude().toString());
+        location.put("longitude", response.getLocation().getLongitude().toString());
+        return location;
+    }*/
+    @GetMapping("/client-location")
+    public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
+
+        return productService.getClientLocation(request);
     }
 
 

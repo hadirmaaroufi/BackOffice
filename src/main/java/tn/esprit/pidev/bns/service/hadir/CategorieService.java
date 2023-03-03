@@ -1,7 +1,9 @@
 package tn.esprit.pidev.bns.service.hadir;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.hadir.Category;
 import tn.esprit.pidev.bns.entity.hadir.Product;
@@ -9,6 +11,7 @@ import tn.esprit.pidev.bns.repository.hadir.CategorieRep;
 import tn.esprit.pidev.bns.repository.hadir.ProductRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.ICategorieService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -64,5 +67,11 @@ public class CategorieService implements ICategorieService {
 
         categorieRep.save(category);
         productRep.save(product);
+    }
+    @Override
+    public String getClientIp(HttpServletRequest request) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity("https://api.ipify.org", String.class);
+        return response.getBody();
     }
 }

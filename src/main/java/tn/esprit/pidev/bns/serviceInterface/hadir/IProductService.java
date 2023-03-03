@@ -1,10 +1,14 @@
 package tn.esprit.pidev.bns.serviceInterface.hadir;
 
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import tn.esprit.pidev.bns.entity.hadir.ConversionCurrency;
 import tn.esprit.pidev.bns.entity.hadir.Currency;
 import tn.esprit.pidev.bns.entity.hadir.Product;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IProductService {
@@ -22,5 +26,7 @@ public interface IProductService {
     public Product retrieveProduct(Integer idProduct);
 
     public boolean removeProduct(Integer idProduct);
+    //String getClientIp(HttpServletRequest request);
+    public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception;
     // public  void affcterProductToShop(Integer idShop, Integer idProduct);
 }

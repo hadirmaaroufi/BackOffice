@@ -1,20 +1,30 @@
 package tn.esprit.pidev.bns.service.hadir;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.client.ExchangeRateClient;
 import tn.esprit.pidev.bns.client.Rates;
 import tn.esprit.pidev.bns.entity.hadir.*;
+import tn.esprit.pidev.bns.entity.hadir.Currency;
 import tn.esprit.pidev.bns.repository.hadir.CategorieRep;
 import tn.esprit.pidev.bns.repository.hadir.CurrencyRepository;
 import tn.esprit.pidev.bns.repository.hadir.ProductRep;
 import tn.esprit.pidev.bns.repository.hadir.ShopRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IProductService;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 @Service
 public class ProductService implements IProductService {
@@ -29,6 +39,11 @@ public class ProductService implements IProductService {
     ExchangeRateClient exchangeRateClient;
     @Autowired
     CurrencyRepository currencyRepository;
+    @Autowired
+    CategorieService categorieService;
+
+    private final String LOCALHOST_IPV4 = "127.0.0.1";
+    private final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
 
     @Override
     public List<Product> retrieveAllProducts() {
@@ -112,6 +127,36 @@ public class ProductService implements IProductService {
         return false;
     }
 
+   /* @Override
+    public String getClientIp(HttpServletRequest request) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity("https://api.ipify.org", String.class);
+        return response.getBody();
+    }*/
+
+    @Override
+    public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
+        String clientIp = categorieService.getClientIp(request);
+        File database = new File("C:/GeoLite2-City.mmdb");
+        DatabaseReader reader = new DatabaseReader.Builder(database).build();
+        InetAddress ipAddress = InetAddress.getByName(clientIp);
+        CityResponse response = reader.city(ipAddress);
+        Map<String, String> location = new HashMap<>();
+        location.put("country", response.getCountry().getName());
+        location.put("region", response.getMostSpecificSubdivision().getName());
+        location.put("city", response.getCity().getName());
+        location.put("latitude", response.getLocation().getLatitude().toString());
+        location.put("longitude", response.getLocation().getLongitude().toString());
+
+        String countryCode = response.getCountry().getIsoCode();
+        Locale locale = new Locale("", countryCode);
+        java.util.Currency currency = java.util.Currency.getInstance(locale);
+        location.put("currency", currency.getCurrencyCode());
+        return location;
+    }
+
+
+
 
 
     /*@Override
@@ -128,5 +173,6 @@ public class ProductService implements IProductService {
         categorieRep.save(category);
         productRep.save(product);
     }*/
+
 
 }
