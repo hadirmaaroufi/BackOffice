@@ -1,5 +1,9 @@
 package tn.esprit.pidev.bns.service.ibtihel;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.model.Customer;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -8,34 +12,30 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.webjars.NotFoundException;
 import tn.esprit.pidev.bns.entity.hadir.Product;
-import tn.esprit.pidev.bns.entity.ibtihel.Cart;
-import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
-import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
-import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
+import tn.esprit.pidev.bns.entity.ibtihel.*;
 import tn.esprit.pidev.bns.entity.omar.Deliverer;
+import tn.esprit.pidev.bns.entity.omar.User;
 import tn.esprit.pidev.bns.repository.hadir.ProductRepo;
-import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
-import tn.esprit.pidev.bns.repository.ibtihel.CommandLineRepo;
-import tn.esprit.pidev.bns.repository.ibtihel.DeliveryRepo;
-import tn.esprit.pidev.bns.repository.ibtihel.PurchaseOrderRepo;
+import tn.esprit.pidev.bns.repository.ibtihel.*;
 import tn.esprit.pidev.bns.repository.omar.DelivererRepo;
+import tn.esprit.pidev.bns.repository.omar.IUserRepo;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IServiceIbtihel;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Slf4j
 @AllArgsConstructor
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ServiceIbtihel implements IServiceIbtihel {
 
@@ -52,6 +52,18 @@ public class ServiceIbtihel implements IServiceIbtihel {
     DelivererRepo delivererRepo;
 @Autowired
     ProductRepo productRepo;
+
+@Autowired
+   private PaymentRepo paymentRepo;
+
+@Autowired
+    IUserRepo userRepo;
+
+
+
+///stripe
+//@Value("sk_test_51Khl7ZAmmAEwNuySJwTRMgb230wvzoZdIK2y9TshyH9zw23VcRLJtZFu9X3oL4CHhPUUjdnwFZKs7i3GCsLYaAhI00CeUoUGzp")
+//String stripeKey;
 
 
 
@@ -172,8 +184,13 @@ public class ServiceIbtihel implements IServiceIbtihel {
         return purchaseOrderRepo.findById(idOrder).get();
     }
 
-
-
+    @Override
+    public int TotalOrdersTVA(int idOrder) {
+        PurchaseOrder purchaseOrder= purchaseOrderRepo.findById(idOrder).orElse(null);
+        int total = 0;
+        total = (int) ((purchaseOrder.getCart().getTotalCart()*purchaseOrder.getTax())+ purchaseOrder.getCart().getTotalCart());
+        return total;
+    }
 
 
     /////// Delivery ////////
@@ -277,9 +294,6 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
 
 
-
-
-
     //mail ***********
 
 
@@ -352,6 +366,55 @@ public class ServiceIbtihel implements IServiceIbtihel {
 
 
 
+
+ /////////////// Payment STRIPE ///////
+
+    @Override
+    public Payment payment(int idUser, int idOrder, Payment p) throws StripeException {
+
+        Stripe.apiKey = "sk_test_51MhUkfKKTmwWBHpLis6pDnCyZje6jrMcCx94yEbKPZjaZvvROd1PLzbEouw4wQnkgUxXkS3ZuKRKGnDe4951Mzhv004MUWaF0f";
+        User user = userRepo.findById(idUser).get();
+        PurchaseOrder purchaseOrder = purchaseOrderRepo.findById(idOrder).get();
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", user.getFirstName());
+        params.put("email", user.getEmail());
+        params.put("amount*100", purchaseOrder.getCart().getTotalCart());
+        Customer customer = Customer.create(params);
+        p.setCustomerId(customer.getId());
+        return p;
+
+
+    }
+
+    @Override
+    public double createCharge(String token, int idUser, int idOrder) throws StripeException {
+
+        Optional<User> user = userRepo.findById(idUser);
+        PurchaseOrder purchaseOrder = purchaseOrderRepo.findById(idOrder).get();
+
+        String id;
+        Stripe.apiKey = "sk_test_51MhUkfKKTmwWBHpLis6pDnCyZje6jrMcCx94yEbKPZjaZvvROd1PLzbEouw4wQnkgUxXkS3ZuKRKGnDe4951Mzhv004MUWaF0f";
+        Map<String, Object> chargeParams = new HashMap<>();
+        chargeParams.put("amount", Math.round(TotalOrdersTVA(idOrder)));
+        chargeParams.put("currency", "usd");
+        chargeParams.put("source", "tok_visa"); // ^ obtained with Stripe.js
+        //create a charge
+        Charge charge = Charge.create(chargeParams);
+        id = charge.getId();
+        if (id == null) {
+            throw new RuntimeException("Something went wrong!");
+        }
+
+        Payment payment = new Payment(); // Create a new Payment object
+      // Set the properties of the Payment object as required
+        payment.setCreated(1);
+        payment.setUser(user.get());
+        purchaseOrder.setPayment(payment);
+        paymentRepo.save(payment);
+        // payment successfully
+        return TotalOrdersTVA(idOrder);
+
+    }
 
 
 

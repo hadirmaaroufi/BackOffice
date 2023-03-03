@@ -1,9 +1,11 @@
 package tn.esprit.pidev.bns.controller.ibtihel;
 
 
+import com.stripe.exception.StripeException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequestMapping("/ControllerIbtihel")
@@ -147,8 +150,10 @@ public class IbtihelController {
       return serviceIbtihel.ListOrderById(idOrder);
     }
 
-
-
+    @PutMapping("/TotalOrdersTVA/{idOrder}")
+    public int TotalOrdersTVA(@PathVariable("idOrder") int idOrder) {
+        return serviceIbtihel.TotalOrdersTVA(idOrder);
+    }
 
 
 
@@ -209,5 +214,15 @@ public class IbtihelController {
     @GetMapping("/availableDelivery/{id}")
     public String availableDelivery(@PathVariable("id") int id) {
         return serviceIbtihel.availableDelivery(id);
+    }
+
+
+    ///////// stripe payment
+
+    @PostMapping("/stripePayment/{token}/{idUser}/{idOrder}")
+    @ResponseBody
+    public double createCharge(@PathVariable ("token") String token, @PathVariable("idUser") int idUser, @PathVariable ("idOrder") int idOrder) throws StripeException
+    {
+        return serviceIbtihel.createCharge(token,idUser,idOrder);
     }
 }

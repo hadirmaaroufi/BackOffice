@@ -25,6 +25,7 @@ public class PurchaseOrder implements Serializable {
     private PaymentMethod paymentMethod;
 
     private int orderPrice;
+    private int tax;
 
     @Temporal(TemporalType.DATE)
     private Date date;
@@ -41,4 +42,7 @@ public class PurchaseOrder implements Serializable {
     @JsonIgnore
     @ManyToOne
     private Delivery delivery;
+
+    @OneToOne
+    private Payment payment;
 }

@@ -1,9 +1,7 @@
 package tn.esprit.pidev.bns.serviceInterface.ibtihel;
 
-import tn.esprit.pidev.bns.entity.ibtihel.Cart;
-import tn.esprit.pidev.bns.entity.ibtihel.CommandLine;
-import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
-import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
+import com.stripe.exception.StripeException;
+import tn.esprit.pidev.bns.entity.ibtihel.*;
 
 import java.util.List;
 
@@ -44,6 +42,9 @@ public interface IServiceIbtihel {
 
     public PurchaseOrder ListOrderById(Integer idOrder);
 
+
+   public int TotalOrdersTVA (int idOrder);
+
     //delivery
 
     public Delivery addDelivery(Delivery delivery);
@@ -70,4 +71,13 @@ public interface IServiceIbtihel {
 
 
     public CommandLine addProductToCommandLine(int idCommandLine, int IdProduct);
+
+
+
+    ///////// stripe ///////
+
+    public Payment payment(int idUser, int idOrder, Payment p) throws StripeException;
+    public double createCharge(String token, int idUser, int idOrder) throws StripeException ;
+
+
 }

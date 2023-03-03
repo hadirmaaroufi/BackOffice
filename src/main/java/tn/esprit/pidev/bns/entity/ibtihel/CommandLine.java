@@ -29,3 +29,4 @@ public class CommandLine {
    @ManyToOne (cascade = CascadeType.ALL)
    private Cart cart;
 }
+//idproduit idpanier qte commandline
