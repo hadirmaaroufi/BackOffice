@@ -1,81 +1,144 @@
 package tn.esprit.pidev.bns.entity.ibtihel;
 
-import com.itextpdf.io.image.ImageData;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.layout.element.Image;
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import tn.esprit.pidev.bns.service.ibtihel.OrderService;
+
+@Component("pdfGenerator")
 public class PDFGenerator {
 
 
+    @Value("${pdfDir}")
+    private String pdfDir;
 
-    private List<PurchaseOrder> listPurshaseOrder;
+    @Value("${reportFileName}")
+    private String reportFileName;
+
+    @Value("${reportFileNameDateFormat}")
+    private String reportFileNameDateFormat;
+
+    @Value("${localDateFormat}")
+    private String localDateFormat;
+
+    @Value("${logoImgPath}")
+    private String logoImgPath;
+
+    @Value("${logoImgScale}")
+    private Float[] logoImgScale;
+
+
+    @Value("${table_noOfColumns}")
+    private int noOfColumns;
+
+    @Value("${table.columnNames}")
+    private List<String> columnNames;
+
+
+    @Autowired
+    OrderService orderService;
+
+
+    private static Font COURIER = new Font(Font.FontFamily.COURIER, 20, Font.BOLD);
+    private static Font COURIER_SMALL = new Font(Font.FontFamily.COURIER, 16, Font.BOLD);
+    private static Font COURIER_SMALL_FOOTER = new Font(Font.FontFamily.COURIER, 12, Font.BOLD);
 
     public PDFGenerator(List<PurchaseOrder> listPurshaseOrder) {
-        this.listPurshaseOrder = listPurshaseOrder;
+
     }
 
 
-    private void writeTableHeader(PdfPTable table) {
+    public void generatePdfReport() {
 
-        //Créer des cellules de tableau pour l'en-tête du tableau
-        PdfPCell cell = new PdfPCell();
+        Document document = new Document();
 
-        // Setting the background color and padding
-        cell.setBackgroundColor(Color.BLUE);
-        cell.setPadding(5);
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(getPdfNameWithDate()));
+            document.open();
+            addLogo(document);
+            addDocTitle(document);
+            createTable(document, noOfColumns);
+            addFooter(document);
+            document.close();
+            System.out.println("------------------Your PDF Report is ready!-------------------------");
 
-        // Creating font
-        // Setting font style and size
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
-        font.setColor(Color.WHITE);
+        } catch (FileNotFoundException | DocumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-
-        // Ajout d'en-têtes dans la cellule- l'entête du tableau créé
-         // Ajout d'une cellule au tableau
-        cell.setPhrase(new Phrase("Order ID", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Reference", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Payment Method", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Order Price", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Date", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Adress", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Phone Number", font));
-        table.addCell(cell);
-
-        cell.setPhrase(new Phrase("Mail", font));
-        table.addCell(cell);
     }
 
 
+    //ajout logo
+    private void addLogo(Document document) {
+        try {
+            Image img = Image.getInstance(logoImgPath);
+            img.scalePercent(logoImgScale[0], logoImgScale[1]);
+            img.setAlignment(Element.ALIGN_RIGHT);
+            document.add(img);
+        } catch (DocumentException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
-    // ajout des données dans le tableau
-    private void writeTableData(PdfPTable table) {
+    /// méthode leave emptyline
+    private static void leaveEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
+    }
 
-        // Itération sur la liste des orders
-        for (PurchaseOrder purchaseOrder : listPurshaseOrder) {
-            //adding order id
+
+    //titre
+    private void addDocTitle(Document document) throws DocumentException {
+        String localDateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern(localDateFormat));
+        Paragraph p1 = new Paragraph();
+        leaveEmptyLine(p1, 1);
+        p1.add(new Paragraph(reportFileName, COURIER));
+        p1.setAlignment(Element.ALIGN_CENTER);
+        leaveEmptyLine(p1, 1);
+        p1.add(new Paragraph("Order pdf generated on " + localDateString, COURIER_SMALL));
+
+        document.add(p1);
+
+    }
+
+
+    // get data fromdata base
+    private void getDbData(PdfPTable table) {
+
+        List<PurchaseOrder> list = orderService.ListPurchaseOrder();
+        for (PurchaseOrder purchaseOrder : list) {
+
+            table.setWidthPercentage(100);
+            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);
+
             table.addCell(String.valueOf(purchaseOrder.getIdOrder()));
             table.addCell(purchaseOrder.getReference());
             table.addCell(purchaseOrder.getPaymentMethod().toString());
@@ -84,61 +147,55 @@ public class PDFGenerator {
             table.addCell(purchaseOrder.getAddress());
             table.addCell(String.valueOf(purchaseOrder.getPhoneNumber()));
             table.addCell(purchaseOrder.getMail());
+
+
+            System.out.println(purchaseOrder.getReference());
         }
+
     }
 
 
+    //table
 
+    private void createTable(Document document, int noOfColumns) throws DocumentException {
+        Paragraph paragraph = new Paragraph();
+        leaveEmptyLine(paragraph, 3);
+        document.add(paragraph);
 
-    public void export(HttpServletResponse response) throws DocumentException, IOException {
-        //creation d'un objet document
-        Document document = new Document(PageSize.A4);
+        PdfPTable table = new PdfPTable(noOfColumns);
 
-        //instance de pdfWriter
-        PdfWriter.getInstance(document, response.getOutputStream());
+        for (int i = 0; i < noOfColumns; i++) {
+            PdfPCell cell = new PdfPCell(new Phrase(columnNames.get(i)));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setBackgroundColor(BaseColor.CYAN);
+            table.addCell(cell);
+        }
 
-        //ouvrir le doc pour le modifier
-        document.open();
-
-        // Creating font
-        // Setting font style and size
-        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(18);
-        font.setColor(Color.BLUE);
-
-        /*String imgPath ="src/main/resources/images/- Silvia Mellow -.png";
-        ImageData imageData = ImageDataFactory.create(imgPath);
-        Image image= new Image(imageData);
-        image.setFixedPosition(document.getPageSize().getWidth()/2-320, document.getPageSize().getHeight()/2-160);
-        image.setOpacity(0.3f); */
-
-
-        //creation de paragraph
-        Paragraph p = new Paragraph("List of Orders", font);
-
-        //aligner la Paragraph au centre
-        p.setAlignment(Paragraph.ALIGN_CENTER);
-
-        document.add(p);
-
-        PdfPTable table = new PdfPTable(8);
-        table.setWidthPercentage(150f);
-        table.setWidths(new float[] {3.0f, 3.5f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f });
-        table.setSpacingBefore(20);
-
-        writeTableHeader(table);
-        writeTableData(table);
-
-
-
-
-
+        table.setHeaderRows(1);
+        getDbData(table);
         document.add(table);
-
-        document.close();
-        System.out.println("PDF Generated");
-
     }
+
+
+    // le bas de la  page
+
+    private void addFooter(Document document) throws DocumentException {
+        Paragraph p2 = new Paragraph();
+        leaveEmptyLine(p2, 3);
+        p2.setAlignment(Element.ALIGN_MIDDLE);
+        p2.add(new Paragraph(
+                "------------------------End Of " + reportFileName + "------------------------",
+                COURIER_SMALL_FOOTER));
+
+        document.add(p2);
+    }
+
+
+    private String getPdfNameWithDate() {
+        String localDateString = LocalDateTime.now().format(DateTimeFormatter.ofPattern(reportFileNameDateFormat));
+        return pdfDir + reportFileName + "-" + localDateString + ".pdf";
+    }
+
 
 
 }

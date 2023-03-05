@@ -5,6 +5,7 @@ import com.stripe.exception.StripeException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.PDFGenerator;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
@@ -24,12 +25,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequestMapping("/OrderController")
 public class OrderController {
-
+    @Autowired
     IOrder iOrder;
-
+    @Autowired
     ICart iCart;
 
-
+    @Autowired
+    public  PDFGenerator pdfGenerator;
 
     //////////order
 
@@ -78,20 +80,9 @@ public class OrderController {
 
     /////// PDF ///////
 
-    @GetMapping("/orders/export/pdf")
-    public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType("application/pdf");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=ORDERS_" + currentDateTime + ".pdf";
-        response.setHeader(headerKey, headerValue);
-
-        List<PurchaseOrder> listPurshaseOrder = iOrder.ListPurchaseOrder();
-
-        PDFGenerator exporter = new PDFGenerator(listPurshaseOrder);
-        exporter.export(response);
+    @GetMapping("/orders/pdf")
+    public void exportToPDF()  {
+        pdfGenerator.generatePdfReport();
 
     }
 
