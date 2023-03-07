@@ -1,6 +1,5 @@
 package tn.esprit.pidev.bns.controller.ibtihel;
 
-import com.lowagie.text.DocumentException;
 import com.stripe.exception.StripeException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,26 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.PDFGenerator;
 import tn.esprit.pidev.bns.entity.ibtihel.PurchaseOrder;
+import tn.esprit.pidev.bns.service.ibtihel.OrderService;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.ICart;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IOrder;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequestMapping("/OrderController")
+
 public class OrderController {
     @Autowired
     IOrder iOrder;
     @Autowired
     ICart iCart;
+
 
     @Autowired
     public  PDFGenerator pdfGenerator;
@@ -41,8 +37,9 @@ public class OrderController {
                                           @PathVariable("idCart") int idCart )
     {
         order.setCart(iCart.ListCartById(idCart));
-        return  iOrder.addPurchaseOrder(order);
+        return  iOrder.confirmPurchaseOrder(order);
     }
+
 
 
     @PutMapping("/updateOrder")
@@ -50,20 +47,27 @@ public class OrderController {
         return  iOrder.updatePurchaseOrder(order);
     }
 
+
     @GetMapping("/GetListOrders")
     public List<PurchaseOrder> ListPurchaseOrder() {
         return iOrder.ListPurchaseOrder();
     }
+
+
 
     @GetMapping("/GetListOrderById/{id}")
     public PurchaseOrder ListOrderById( @PathVariable ("id") Integer idOrder) {
         return iOrder.ListOrderById(idOrder);
     }
 
+
+
     @PutMapping("/TotalOrdersTVA/{idOrder}")
     public int TotalOrdersTVA(@PathVariable("idOrder") int idOrder) {
         return iOrder.TotalOrdersTVA(idOrder);
     }
+
+
 
 
 
@@ -78,6 +82,8 @@ public class OrderController {
 
 
 
+
+
     /////// PDF ///////
 
     @GetMapping("/orders/pdf")
@@ -85,6 +91,9 @@ public class OrderController {
         pdfGenerator.generatePdfReport();
 
     }
+
+
+
 
 
 

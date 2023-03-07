@@ -10,17 +10,18 @@ public interface IOrder {
 
     //order
 
-    public PurchaseOrder addPurchaseOrder(PurchaseOrder order);
+    public PurchaseOrder confirmPurchaseOrder(PurchaseOrder order);
     public PurchaseOrder updatePurchaseOrder(PurchaseOrder order);
-
 
     List<PurchaseOrder> ListPurchaseOrder();
 
     public PurchaseOrder ListOrderById(Integer idOrder);
 
-
     public int TotalOrdersTVA (int idOrder);
 
     public Payment payment(int idUser, int idOrder, Payment p) throws StripeException;
     public double createCharge(String token, int idUser, int idOrder) throws StripeException ;
+
+
+
 }

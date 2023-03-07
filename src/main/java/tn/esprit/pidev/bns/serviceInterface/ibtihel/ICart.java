@@ -10,8 +10,6 @@ public interface ICart {
 
     public Cart saveCart(Cart cart, Integer idCommandLine);
 
-
-
     public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart);
 
     public Cart updateCart(Cart cart);
@@ -20,4 +18,9 @@ public interface ICart {
     public List<Cart> ListCart();
 
     public Cart ListCartById(Integer idCart);
+
+
+
+
+
 }

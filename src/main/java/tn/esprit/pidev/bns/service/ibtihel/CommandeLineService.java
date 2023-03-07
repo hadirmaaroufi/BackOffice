@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 @Slf4j
 @AllArgsConstructor
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
 public class CommandeLineService implements ICommandeLine {
     @Autowired
     CommandLineRepo commandLineRepo;
@@ -29,6 +29,7 @@ public class CommandeLineService implements ICommandeLine {
 
         return commandLineRepo.save(commandLine);
     }
+
 
     @Override
     public CommandLine updateCommandLine(CommandLine commandLine) {

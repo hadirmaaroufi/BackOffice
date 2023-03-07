@@ -14,6 +14,8 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+
+
 public class PurchaseOrder implements Serializable {
 
     @Id
@@ -36,6 +38,7 @@ public class PurchaseOrder implements Serializable {
 
 
 
+
     @OneToOne
     private Cart cart;
 
@@ -46,4 +49,6 @@ public class PurchaseOrder implements Serializable {
     @JsonIgnore
     @OneToOne
     private Payment payment;
+
+   
 }

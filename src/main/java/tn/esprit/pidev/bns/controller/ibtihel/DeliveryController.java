@@ -3,6 +3,7 @@ package tn.esprit.pidev.bns.controller.ibtihel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.Delivery;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.IDelivery;
@@ -16,15 +17,18 @@ import java.util.List;
 
 public class DeliveryController {
 
-
+    @Autowired
     IDelivery iDelivery;
+
+
+
+
 
     ////////delivery
     //hethi bech nbadalha ba3d kima mta l order
     @PostMapping("/addDelivery")
     public Delivery addDelivery(@RequestBody Delivery delivery)
     {
-
         return iDelivery.addDelivery(delivery);
     }
 
@@ -47,6 +51,7 @@ public class DeliveryController {
         return iDelivery.ListDelivery();
     }
 
+
     @GetMapping("/GetListDeliveryById/{id}")
     public Delivery ListDeliveryById( @PathVariable("id") Integer idDelivery) {
         return iDelivery.ListDeliveryById(idDelivery);
@@ -63,6 +68,7 @@ public class DeliveryController {
     }
 
 
+
     @PutMapping("/assignDeliveryToOrder")
     public void assignDeliveryToOrder(@RequestParam ("idOrder") Integer idOrder,
                                       @RequestParam("idDelivery") Integer idDelivery) {
@@ -73,9 +79,17 @@ public class DeliveryController {
 
     }
 
+
+
     @GetMapping("/availableDelivery/{id}")
     public String availableDelivery(@PathVariable("id") int id) {
         return iDelivery.availableDelivery(id);
     }
+
+
+
+
+
+
 
 }

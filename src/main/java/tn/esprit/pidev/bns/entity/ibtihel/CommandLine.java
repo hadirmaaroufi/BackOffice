@@ -5,6 +5,7 @@ import lombok.*;
 import tn.esprit.pidev.bns.entity.hadir.Product;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -14,13 +15,15 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class CommandLine {
+public class CommandLine implements Serializable {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCommandeLine;
     private int quantity;
+
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Product> products;

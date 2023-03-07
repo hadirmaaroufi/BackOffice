@@ -13,6 +13,11 @@ import tn.esprit.pidev.bns.repository.ibtihel.CartRepo;
 import tn.esprit.pidev.bns.repository.ibtihel.CommandLineRepo;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.ICart;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +25,6 @@ import java.util.Set;
 @Service
 @Slf4j
 @AllArgsConstructor
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartService implements ICart {
 
@@ -32,10 +36,10 @@ public class CartService implements ICart {
 
 
 
+
     /// cart ///////////////////
     @Override
     public Cart saveCart(Cart cart, Integer idCommandLine) {
-
 
 
         CommandLine commandLine = commandLineRepo.findById(idCommandLine).orElseThrow(()
@@ -53,14 +57,18 @@ public class CartService implements ICart {
     }
 
 
+
+
     @Override
     public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart) {
-        Cart cart= cartRepo.findById( idCart).get();
-        CommandLine commandLine= commandLineRepo.findById(idCommandLine).get();
+        Cart cart = cartRepo.findById(idCart).get();
+        CommandLine commandLine = commandLineRepo.findById(idCommandLine).get();
         commandLine.setCart(cart);
         commandLineRepo.save(commandLine);
 
     }
+
+
 
 
     @Override
@@ -69,17 +77,23 @@ public class CartService implements ICart {
         return cartRepo.save(cart);
     }
 
+
+
     @Override
     public Cart deleteCart(Integer idCart) {
         cartRepo.deleteById(idCart);
         return null;
     }
 
+
+
     @Override
     public List<Cart> ListCart() {
 
-        return  (List<Cart>) cartRepo.findAll();
+        return (List<Cart>) cartRepo.findAll();
     }
+
+
 
     @Override
     public Cart ListCartById(Integer idCart) {
@@ -88,10 +102,7 @@ public class CartService implements ICart {
     }
 
 
-
-
-
-
-
-
 }
+
+
+

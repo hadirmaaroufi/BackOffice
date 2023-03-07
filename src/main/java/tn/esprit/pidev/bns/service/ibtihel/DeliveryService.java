@@ -31,7 +31,6 @@ public class DeliveryService implements IDelivery {
     @Autowired
     DeliveryRepo deliveryRepo;
 
-
     @Autowired
     PurchaseOrderRepo purchaseOrderRepo;
 
@@ -44,6 +43,7 @@ public class DeliveryService implements IDelivery {
         return delivery;
     }
 
+
     @Override
     public Delivery updateDelivery(Delivery delivery) {
         return deliveryRepo.save(delivery);
@@ -55,30 +55,42 @@ public class DeliveryService implements IDelivery {
         return null;
     }
 
+
+
     @Override
     public List<Delivery> ListDelivery() {
         return (List<Delivery>) deliveryRepo.findAll();
     }
+
+
 
     @Override
     public Delivery ListDeliveryById(Integer idDelivery) {
         return deliveryRepo.findById(idDelivery).get();
     }
 
+
+
     @Override
     public int notstarted(int id) {
         return deliveryRepo.notstarted(id);
     }
+
+
+
 
     @Override
     public int delivered(int id) {
         return deliveryRepo.delivered(id);
     }
 
+
     @Override
     public int inProgress(int id) {
         return deliveryRepo.inProgress(id);
     }
+
+
 
     @Override
     public String availableDelivery(int id) {
@@ -102,6 +114,11 @@ public class DeliveryService implements IDelivery {
     }
 
 
+
+
+
+
+
     @Override
     public void assignDelivererToDelivery(Integer idDelivery, Integer idDeliverer) {
         Deliverer deliverer =delivererRepo.findById( idDeliverer).get();
@@ -109,6 +126,10 @@ public class DeliveryService implements IDelivery {
         delivery.setDeliverer(deliverer);
         deliveryRepo.save(delivery);
     }
+
+
+
+
 
     @Override
     public void assignDeliveryToOrder(Integer idOrder, Integer idDelivery) {
@@ -118,6 +139,8 @@ public class DeliveryService implements IDelivery {
         purchaseOrderRepo.save(purchaseOrder);
 
     }
+
+
 
 
 

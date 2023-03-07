@@ -4,6 +4,7 @@ package tn.esprit.pidev.bns.controller.ibtihel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.ibtihel.Cart;
 import tn.esprit.pidev.bns.serviceInterface.ibtihel.ICart;
@@ -14,8 +15,10 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequestMapping("/CartController")
+
 public class CartController {
 
+    @Autowired
     ICart iCart;
 
 
@@ -29,6 +32,7 @@ public class CartController {
 
     }
 
+
     @PutMapping("/assignCommandeLineToCart")
     public void assignCommandeLineToCart(@RequestParam("idCommandLine") Integer idCommandLine,
                                          @RequestParam("idCart") Integer idCart) {
@@ -38,10 +42,13 @@ public class CartController {
     }
 
 
+
     @PutMapping("/updateCart")
     public Cart updateCart( @RequestBody Cart cart) {
         return  iCart.updateCart(cart);
     }
+
+
 
     @PutMapping("/deleteCart/{id}")
     public Cart deleteCart( @PathVariable("id") Integer idCart) {
@@ -61,7 +68,6 @@ public class CartController {
 
         return iCart.ListCartById(idCart);
     }
-
 
 
 
