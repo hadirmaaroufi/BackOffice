@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import tn.esprit.pidev.bns.controller.siwardhrif.ClaimRestController;
+import tn.esprit.pidev.bns.service.siwardhrif.ClaimServiceImpl;
 
 import java.io.File;
 
@@ -15,7 +16,7 @@ public class BnsApplication {
 
 	public static void main(String[] args) {
 
-		new File(ClaimRestController.uploadDirectory).mkdir();
+		//new File(ClaimServiceImpl.uploadDirectory).mkdir();
 
 		SpringApplication.run(BnsApplication.class, args);
 	}

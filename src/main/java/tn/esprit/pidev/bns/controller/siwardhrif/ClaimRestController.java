@@ -1,20 +1,21 @@
 package tn.esprit.pidev.bns.controller.siwardhrif;
 
+import com.google.zxing.WriterException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.bns.entity.siwardhrif.Claim;
+import tn.esprit.pidev.bns.entity.siwardhrif.SMS;
 import tn.esprit.pidev.bns.repository.siwardhrif.ClaimRepository;
 import tn.esprit.pidev.bns.serviceInterface.siwardhrif.IClaimService;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,35 +26,33 @@ public class ClaimRestController {
     @Autowired
     IClaimService claimService;
 
-    public static String uploadDirectory=System.getProperty("user.dir")+"/src/main/resources/imagedata";
 
     @Autowired
     private ClaimRepository claimRepository;
 
-    //http://localhost:9000/bns/claim/add-claim
+
+    //http://localhost:9000/bns/claim/addclaim
     @PostMapping("/addclaim")
     @ResponseBody
-    public Claim createClaim(Claim c , @RequestParam("img")MultipartFile file) {
-        StringBuilder fileNames =new StringBuilder();
-        String filename=c.getIdClaim() + file.getOriginalFilename();
-        Path fileNameAndPath = Paths.get(uploadDirectory,filename);
+    public ResponseEntity<ByteArrayResource> createClaim(Claim c , @RequestParam("img")MultipartFile file, SMS sms) throws IOException, WriterException {
 
-        try {
-            Files.write(fileNameAndPath, file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        c.setCfile(filename);
-        Claim claim = claimService.createClaim(c);
-        return claim;
+        return claimService.createClaim(c,file,sms);
     }
+
+    //define a method to download files
+    //http://localhost:9000/bns/claim/download/{filename}
+    @GetMapping("/download/{filename}")
+    public ResponseEntity<Resource> downloadFiles (@PathVariable("filename") String filename) throws IOException {
+        return  claimService.downloadFiles(filename);
+    }
+
 
 
     //http://localhost:9000/bns/claim/retrieve-all-claims
     @GetMapping("/retrieve-all-claims")
     public List<Claim> getAllClaims() {
         List<Claim> listClaims = claimService.getAllClaims();
+
         return listClaims;
     }
 
@@ -65,8 +64,8 @@ public class ClaimRestController {
 
     //http://localhost:9000/bns/claim/traiterClaim/id
     @GetMapping("/traiterClaim/{idClaim}")
-    public Claim traiterClaim(@PathVariable("idClaim") Integer idClaim) {
-        return claimService.traiterClaim(idClaim);
+    public Claim traiterClaim(@PathVariable("idClaim") Integer idClaim,SMS sms) {
+        return claimService.traiterClaim(idClaim,sms);
     }
 
     //http://localhost:9000/bns/claim/getClaimsByEtat/1 or 0
@@ -75,22 +74,21 @@ public class ClaimRestController {
         return claimService.getClaimsByEtat(treated);
     }
 
-    //http://localhost:9000/bns/claim/ByCreationDate/
-    @GetMapping("/ByCreationDate/{debut}/{fin}")
-    public String getClaimsByCreationDate(@PathVariable ("debut") Date debut,
-                                          @PathVariable ("fin") Date fin) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    //http://localhost:9000/bns/claim/ByCreationDate?debut=2023-03-05&fin=2023-03-06
+    @GetMapping("/ByCreationDate")
+    public List<Claim> getClaimsByCreationDate(@RequestParam ("debut")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date debut,
+                                          @RequestParam ("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin) {
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         List<Claim> claims = claimService.getClaimsByCreationDate(debut, fin);
-        return "claimsByCreationDate";
+        return claims;
     }
 
-    //http://localhost:9000/bns/claim/ByProcessingDate/
-    @GetMapping("/ByProcessingDate/{debut}/{fin}")
-    public String getClaimsByProcessingDate(@PathVariable ("debut") Date debut,
-                                          @PathVariable ("fin") Date fin) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    //http://localhost:9000/bns/claim/ByProcessingDate?debut=2023-03-05&fin=2023-03-06
+    @GetMapping("/ByProcessingDate")
+    public List<Claim> getClaimsByProcessingDate(@PathVariable ("debut") @DateTimeFormat(pattern = "yyyy-MM-dd") Date debut,
+                                          @PathVariable ("fin") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fin) {
         List<Claim> claims = claimService.getClaimsByProcessingDate(debut, fin);
-        return "claimsProcessingDate";
+        return claims;
     }
 
 
@@ -99,6 +97,7 @@ public class ClaimRestController {
     public void deleteClaim (@PathVariable("idClaim") Integer idClaim) {
         claimService.deleteClaim(idClaim);
     }
+
 
 
 }

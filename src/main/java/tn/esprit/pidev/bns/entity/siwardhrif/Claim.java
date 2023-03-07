@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import tn.esprit.pidev.bns.entity.omar.Client;
 
 import javax.persistence.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -47,6 +48,29 @@ public class Claim implements Serializable {
 
     private String cfile; // importer fichier pdf ou images par le client
 
+    @Lob
+    private byte[] qrcode;
+
+
+    @Override
+    public String toString() {
+        return "Claim{" +
+                "id=" + idClaim +
+                ", fullname='" + fullName + '\'' +
+                ", orderNumber=" + orderNumber +
+                "productRef=" + productRef +
+                ", creationDate='" + creationDate + '\'' +
+                ", treated=" + treated +
+                ", processingDate=" + processingDate +
+                "subject=" + subject +
+                ", subtheme='" + subtheme + '\'' +
+                ", description=" + description +
+                ", cfile=" + cfile +
+                "qrcode=" + qrcode +
+                '}';
+    }
+
     @ManyToOne
     private Client client;
+
 }
