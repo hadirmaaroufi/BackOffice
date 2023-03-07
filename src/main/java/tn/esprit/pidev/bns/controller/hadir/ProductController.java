@@ -5,17 +5,22 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.bns.entity.hadir.*;
 import tn.esprit.pidev.bns.entity.hadir.Currency;
+import tn.esprit.pidev.bns.repository.hadir.ProductRep;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IProductService;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +37,8 @@ import java.util.*;
 @RequestMapping("/Product")
 public class ProductController {
     IProductService productService;
-    //taux et date pour la classe TVA nestha9 requette taamali tri taa table tva b akber date
+    @Autowired
+    ProductRep productRep;
 
     @GetMapping("/retrieve-all-Products")
     public List<Product> getProducts(@RequestParam(name = "currency", required = false)String currency,HttpServletRequest request) throws IOException, GeoIp2Exception {
@@ -51,7 +57,7 @@ public class ProductController {
         return listProducts;
     }
 
-    @GetMapping("/retrieve-Shop/{product-id}")
+    @GetMapping("/retrieve-Product/{product-id}")
     public Product retrieveProduct(@PathVariable("Product-id") Integer productId) {
         return productService.retrieveProduct(productId);
     }
@@ -112,14 +118,6 @@ public class ProductController {
         productpromotion.setPrice(newprice);
         productService.updateProduct(productpromotion);
     }
-    /*@GetMapping("/")
-    public Map<String, String> index(HttpServletRequest request) {
-        Map<String, String> response = new HashMap<>();
-        String clientIp = productService.getClientIp(request);
-        response.put("clientIp", clientIp);
-        return response;
-
-     */
     @GetMapping("/client-location")
     public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception {
 

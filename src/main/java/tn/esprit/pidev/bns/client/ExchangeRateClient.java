@@ -24,12 +24,12 @@ public class ExchangeRateClient {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>(headers);
         return restTemplate.exchange("https://api.exchangerate.host/latest", HttpMethod.GET, entity, Rates.class).getBody();
-    }*/
+    }http://data.fixer.io/api/latest?access_key=0a5f28039a528338c606d27c78c40e3b*/
    @Scheduled(fixedRate = 5 * 1000 * 60 * 60)
    private void getRatesTask() {
        try {
            RestTemplate restTemplate = new RestTemplate();
-           CurrencyDTO forObject = restTemplate.getForObject("http://data.fixer.io/api/latest?access_key=0a5f28039a528338c606d27c78c40e3b", CurrencyDTO.class);
+           CurrencyDTO forObject = restTemplate.getForObject("https://api.exchangerate.host/latest", CurrencyDTO.class);
            if (currencyRepository.count() > 0) {
                // supprimer les anciennes valeurs
                currencyRepository.deleteAll();
@@ -42,5 +42,6 @@ public class ExchangeRateClient {
            System.out.println(ex.getMessage());
        }
    }
+
 
 }

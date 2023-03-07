@@ -28,7 +28,7 @@ public class Shop implements Serializable {
     @JsonIgnore
     @ManyToOne
     private Supplier supplier;
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     /*@JoinTable(name = "shop_product",
             joinColumns = @JoinColumn(name = "shop_id"),

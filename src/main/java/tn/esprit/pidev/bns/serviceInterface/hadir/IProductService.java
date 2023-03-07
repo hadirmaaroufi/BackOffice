@@ -4,6 +4,7 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import tn.esprit.pidev.bns.entity.hadir.ConversionCurrency;
 import tn.esprit.pidev.bns.entity.hadir.Currency;
 import tn.esprit.pidev.bns.entity.hadir.Product;
+import tn.esprit.pidev.bns.entity.hadir.Tva;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -29,4 +30,5 @@ public interface IProductService {
     //String getClientIp(HttpServletRequest request);
     public Map<String, String> getClientLocation(HttpServletRequest request) throws IOException, GeoIp2Exception;
     // public  void affcterProductToShop(Integer idShop, Integer idProduct);
+
 }

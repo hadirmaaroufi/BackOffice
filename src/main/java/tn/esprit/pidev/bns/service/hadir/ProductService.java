@@ -13,10 +13,7 @@ import tn.esprit.pidev.bns.client.ExchangeRateClient;
 import tn.esprit.pidev.bns.client.Rates;
 import tn.esprit.pidev.bns.entity.hadir.*;
 import tn.esprit.pidev.bns.entity.hadir.Currency;
-import tn.esprit.pidev.bns.repository.hadir.CategorieRep;
-import tn.esprit.pidev.bns.repository.hadir.CurrencyRepository;
-import tn.esprit.pidev.bns.repository.hadir.ProductRep;
-import tn.esprit.pidev.bns.repository.hadir.ShopRep;
+import tn.esprit.pidev.bns.repository.hadir.*;
 import tn.esprit.pidev.bns.serviceInterface.hadir.IProductService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -34,6 +35,8 @@ public class ProductService implements IProductService {
     CategorieRep categorieRep;
     @Autowired
     ShopRep shopRep;
+    @Autowired
+    TvaRep tvaRep;
 
     @Autowired
     ExchangeRateClient exchangeRateClient;
@@ -101,18 +104,6 @@ public class ProductService implements IProductService {
         return Optional.empty();
     }
 
-    /*@Override
-    public Currency currencyConverter(Currency currencyRequest, Currency currencyResponse) {
-        Rates rates = exchangeRateClient.getCurrencyResponse();
-        rates.getRates().get(currencyRequest.getLabel());
-
-
-        Currency currencyOutput = new Currency();
-
-
-        return null;
-    }*/
-
     @Override
     public Product retrieveProduct(Integer idProduct) {
         return productRep.findById(idProduct).orElse(null);
@@ -154,6 +145,7 @@ public class ProductService implements IProductService {
         location.put("DeviseLoc", DeviseLoc.getCurrencyCode());
         return location;
     }
+
 
 
 
