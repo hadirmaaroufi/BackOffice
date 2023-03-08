@@ -7,6 +7,7 @@ import tn.esprit.pidev.bns.entity.siwarbacc.Forum;
 import tn.esprit.pidev.bns.repository.siwarbacc.ForumRepository;
 import tn.esprit.pidev.bns.serviceInterface.siwarbacc.IForumService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,4 +36,11 @@ public class ForumService implements IForumService {
         Forum f = retrieveForum(idForum);
         forumRepository.delete(f);
     }
+
+    public List<Forum> searchForums(String keyword) {
+        return forumRepository.search(keyword);
+    }
+
+
+
 }

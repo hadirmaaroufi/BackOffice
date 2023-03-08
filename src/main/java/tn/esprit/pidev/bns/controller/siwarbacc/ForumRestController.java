@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.siwarbacc.Forum;
+import tn.esprit.pidev.bns.service.siwarbacc.ForumService;
 import tn.esprit.pidev.bns.serviceInterface.siwarbacc.IForumService;
 
 import java.util.List;
@@ -45,5 +46,12 @@ public class ForumRestController {
         Forum forum= forumService.updateForum(f);
         return forum;
     }
+
+
+    @GetMapping("/search/{keyword}")
+    public List<Forum> searchForums(@PathVariable("keyword") String keyword) {
+        return forumService.searchForums(keyword);
+    }
+
 
 }

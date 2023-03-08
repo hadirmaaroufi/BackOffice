@@ -13,4 +13,8 @@ public interface IForumService {
      void removeForum(Integer idForum);
 
     List<Forum> retrieveAllForums();
+
+
+
+    public List<Forum> searchForums(String keyword);
 }
