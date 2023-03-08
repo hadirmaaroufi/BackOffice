@@ -1,6 +1,5 @@
 package tn.esprit.pidev.bns.serviceInterface.siwarbacc;
 
-import tn.esprit.pidev.bns.entity.siwarbacc.Comment;
 import tn.esprit.pidev.bns.entity.siwarbacc.Forum;
 
 import java.util.List;

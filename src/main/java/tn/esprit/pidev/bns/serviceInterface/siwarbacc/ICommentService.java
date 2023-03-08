@@ -8,10 +8,10 @@ import java.util.List;
 public interface ICommentService {
     public List<Comment> retrieveAllComments();
 
-    public Comment retrieveComment(Integer idComment);
-    public Comment updateComment (Comment c);
+    public Comment updateComment(Integer id, Comment updcomment );
     public Comment addComment (Comment c);
+    public void removeComment(Integer id);
+    public Comment getCommentById(Integer id) ;
 
-    public void removeComment(Integer idComment);
-
+    //public Comment affectCommentToForum (Integer idComment, String titleF);
 }

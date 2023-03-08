@@ -2,12 +2,17 @@ package tn.esprit.pidev.bns.service.siwarbacc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.bns.entity.siwarbacc.Blog;
 import tn.esprit.pidev.bns.repository.siwarbacc.BlogRepository;
 import tn.esprit.pidev.bns.serviceInterface.siwarbacc.IBlogService;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -26,6 +31,17 @@ public class BlogService implements IBlogService {
         Blog b=retrieveBlog(id);
         blogRepository.delete(b);
     }
+
+    // public List<Blog> findBlogsWithSorting(String field){
+       //return blogRepository.findAll(Sort.by(Sort.Direction.ASC,field));}
+
+    //public Page<Blog> findBlogsWithPagination(int offset,int pageSize){
+        //Page<Blog> blogs = blogRepository.findAll(PageRequest.of(offset, pageSize));
+        //return  blogs;
+    //
+
+
+
 
 
 }
