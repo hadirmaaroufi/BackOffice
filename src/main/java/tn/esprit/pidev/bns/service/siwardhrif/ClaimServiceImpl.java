@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import tn.esprit.pidev.bns.entity.siwardhrif.BadWord;
 import tn.esprit.pidev.bns.entity.siwardhrif.Claim;
 import tn.esprit.pidev.bns.entity.siwardhrif.SMS;
 import tn.esprit.pidev.bns.repository.siwardhrif.ClaimRepository;
@@ -28,13 +29,14 @@ import tn.esprit.pidev.bns.serviceInterface.siwardhrif.IClaimService;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 @Slf4j
@@ -57,6 +59,9 @@ public class ClaimServiceImpl implements IClaimService {
     public static String uploadDirectory = System.getProperty("user.home") + "/Downloads/uploads/";
 
     public ResponseEntity<ByteArrayResource> createClaim(Claim c, MultipartFile file, SMS sms) throws IOException, WriterException {
+
+        String filterdesc = DescriptionFilter.filterdesc(c.getDescription()) ;
+
         StringBuilder fileNames = new StringBuilder();
         String filename = c.getIdClaim() + file.getOriginalFilename();
         Path fileNameAndPath = Paths.get(uploadDirectory, filename);
@@ -65,6 +70,7 @@ public class ClaimServiceImpl implements IClaimService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         sms.setMessage("Dear BNS customer, we have received your complaint request and are processing" +
@@ -75,6 +81,8 @@ public class ClaimServiceImpl implements IClaimService {
                 .create();
         System.out.println("here is my id:" + message.getSid());// Unique resource ID created to manage this transaction
 
+
+
         BufferedImage qrCodeImage = generateQRCodeImage(c.toString());
 
         // Convert the image to a byte array
@@ -83,7 +91,9 @@ public class ClaimServiceImpl implements IClaimService {
         byte[] qrCodeBytes = baos.toByteArray();
 
 
+
         c.setQrcode(qrCodeBytes);
+            c.setDescription(filterdesc);
             c.setCfile(filename);
             c.setCreationDate(new Date());
             c.setTreated(false);
@@ -115,19 +125,6 @@ public class ClaimServiceImpl implements IClaimService {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
                 .header(String.valueOf(httpHeaders)).body(resource);
 
-
-    }
-
-    //send SMS
-    public void send(SMS sms) {
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        sms.setMessage("Dear BNS customer, we have received your complaint request and are processing" +
-                " it as soon as possible. We will keep you informed of the status of your request. " +
-                "Thank you for your trust");
-
-        Message message = Message.creator(new PhoneNumber(sms.getTo()), new PhoneNumber(FROM_NUMBER), sms.getMessage())
-                .create();
-        System.out.println("here is my id:" + message.getSid());// Unique resource ID created to manage this transaction
 
     }
 
@@ -212,4 +209,43 @@ public class ClaimServiceImpl implements IClaimService {
 
         return image;
 
-    }}
+    }
+    public static class DescriptionFilter {
+
+        private static final String FILE_NAME ="BadWordList/BadWords.txt" ;
+        private static List<BadWord> BAD_WORDS ;
+
+
+        static {
+            try {
+                Path filepath = Paths.get(DescriptionFilter.class.getClassLoader().getResource(FILE_NAME).toURI())  ;
+                List<String> lines = Files.readAllLines(filepath) ;
+                BAD_WORDS = new ArrayList<>() ;
+                for ( String line : lines ) {
+                    BAD_WORDS.add(new BadWord(line)) ;
+                    System.out.println(BAD_WORDS.toString());
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+                BAD_WORDS= new ArrayList<>() ;
+                BAD_WORDS.add(new BadWord("siwar")) ;
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        public static String filterdesc(String desc) {
+            String filterdesc = desc;
+            for (BadWord badword : BAD_WORDS) {
+                String regex = "\\b" + Pattern.quote(badword.getWord()) + "\\b";
+                String asterisks = String.join("", Collections.nCopies(badword.getWord().length(), "*"));
+                filterdesc = filterdesc.replaceAll(regex, asterisks);
+            }
+            return filterdesc;
+        }
+
+
+
+    }
+
+
+}

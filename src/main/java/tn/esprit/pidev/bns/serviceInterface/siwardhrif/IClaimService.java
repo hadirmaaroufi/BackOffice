@@ -35,4 +35,5 @@ public interface IClaimService {
     Claim retrieveClaim(Integer idClaim);
 
     BufferedImage generateQRCodeImage(String idClaim) throws WriterException;
+
 }

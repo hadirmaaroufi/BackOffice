@@ -1,13 +1,26 @@
 package tn.esprit.pidev.bns.controller.siwardhrif;
 
 import lombok.AllArgsConstructor;
+import org.apache.commons.mail.EmailException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.bns.entity.siwardhrif.Offer;
 import tn.esprit.pidev.bns.service.siwardhrif.OfferServiceImpl;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -19,7 +32,7 @@ public class OfferRestController {
 
         //http://localhost:9000/bns/offer/add-offer
         @PostMapping("/add-offer")
-        public Offer createOffer(@RequestBody Offer o) {
+        public Offer createOffer(@RequestBody Offer o) throws EmailException {
             Offer offer = OfferService.createOffer(o);
             return offer;
         }
@@ -44,5 +57,20 @@ public class OfferRestController {
         OfferService.deleteOffer(idOffer);
     }
 
+
+    @GetMapping("/downloadOfferList")
+    public ResponseEntity<byte[]> downloadOffers() throws IOException {
+        List<Offer> offers = OfferService.getAllOffers();
+        String filePath = "C:/Users/asus/Downloads/offers.xlsx";
+        OfferService.createExcelFile(offers, filePath);
+        byte[] excelBytes = Files.readAllBytes(Paths.get(filePath));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "offers.xlsx");
+        headers.setContentLength(excelBytes.length);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
+    }
         // autres méthodes REST pour la gestion des appels d'offre
     }

@@ -20,6 +20,7 @@ public class Offer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idOffer;
 
+    private String namePer;
     private String shopName;
 
     @Enumerated(EnumType.STRING)

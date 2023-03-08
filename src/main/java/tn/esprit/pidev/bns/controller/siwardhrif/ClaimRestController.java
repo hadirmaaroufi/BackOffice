@@ -35,7 +35,6 @@ public class ClaimRestController {
     @PostMapping("/addclaim")
     @ResponseBody
     public ResponseEntity<ByteArrayResource> createClaim(Claim c , @RequestParam("img")MultipartFile file, SMS sms) throws IOException, WriterException {
-
         return claimService.createClaim(c,file,sms);
     }
 
@@ -97,6 +96,7 @@ public class ClaimRestController {
     public void deleteClaim (@PathVariable("idClaim") Integer idClaim) {
         claimService.deleteClaim(idClaim);
     }
+
 
 
 
