@@ -5,6 +5,8 @@ import tn.esprit.pidev.bns.entity.omar.Client;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Builder
@@ -17,12 +19,25 @@ public class Offer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idOffer;
+
+    private String namePer;
     private String shopName;
+
+    @Enumerated(EnumType.STRING)
     private BusinessType businessType;
+
     private int businessPhoneNumber;
+
     private String businessEmail;
+
     private String description;
+
+    private Date startDate;
+
+    private Date endDate;
+
 
     @OneToOne(mappedBy="offer")
     private Client client;
 }
+
