@@ -8,7 +8,7 @@ public interface ICart {
 
     //cart
 
-    public Cart saveCart(Cart cart, Integer idCommandLine);
+    public Cart saveCart(Cart cart);
 
     public void assignCommandeLineToCart(Integer idCommandLine, Integer idCart);
 

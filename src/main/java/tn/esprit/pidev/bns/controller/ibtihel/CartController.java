@@ -25,9 +25,9 @@ public class CartController {
 
     ////////cart
 
-    @PostMapping("/saveCart/ {idCommandLine}")
-    public Cart saveCart(@RequestBody Cart cart, @PathVariable("idCommandLine") Integer idCommandLine) {
-        Cart cart1=iCart.saveCart(cart,idCommandLine);
+    @PostMapping("/saveCart")
+    public Cart saveCart(@RequestBody Cart cart) {
+        Cart cart1=iCart.saveCart(cart);
         return cart1;
 
     }

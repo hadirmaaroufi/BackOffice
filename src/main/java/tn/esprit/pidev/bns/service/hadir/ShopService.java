@@ -109,14 +109,10 @@ public class ShopService implements IShopService {
     @Override
     public double beneficeBrut(int idS) {
         double valeur= 0;
-
-        //Recup stock
         Shop s = this.retrieveShop(idS);
-        //Parcous + calcul
         for (Product p : s.getProducts()) {
             valeur = valeur + p.getPrice();
         }
-
         return valeur;
     }
 

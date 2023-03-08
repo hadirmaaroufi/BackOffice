@@ -39,21 +39,8 @@ public class CartService implements ICart {
 
     /// cart ///////////////////
     @Override
-    public Cart saveCart(Cart cart, Integer idCommandLine) {
-
-
-        CommandLine commandLine = commandLineRepo.findById(idCommandLine).orElseThrow(()
-                -> new NotFoundException("ligne commande non trouvée"));
-        commandLine.getCart();
-        Set<CommandLine> commandLines = new HashSet<CommandLine>();
-        commandLines.add(commandLine);
-        cart.setCommandLines(commandLines);
-
-        commandLineRepo.save(commandLine);
-
+    public Cart saveCart(Cart cart) {
         return cartRepo.save(cart);
-
-
     }
 
 

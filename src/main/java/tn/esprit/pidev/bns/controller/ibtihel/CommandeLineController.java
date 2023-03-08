@@ -23,10 +23,15 @@ public class CommandeLineController {
 
 
 
-    @PostMapping("/addCommandLine")
-    public CommandLine addCommandLine(CommandLine commandLine) {
+    @PostMapping("/addCommandLine/{idCart}")
+    public CommandLine addCommandLine(CommandLine commandLine,@PathVariable("idCart") Integer idCart) {
         System.out.println(commandLine.getQuantity());
-        return iCommandeLine.addCommandLine(commandLine);
+        return iCommandeLine.addCommandLine(commandLine,idCart);
+
+    }
+    @PutMapping("/AffecterProduit-LC/{ligneCommende}")
+    public void assignProductToCommandeL(@PathVariable("ligneCommende") Integer ligneCommende, @RequestBody List<Integer> idProduct){
+        iCommandeLine.assignProductToCommandeL(ligneCommende,idProduct);
     }
 
 
