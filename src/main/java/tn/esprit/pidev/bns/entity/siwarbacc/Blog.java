@@ -18,7 +18,7 @@ import java.util.Date;
 public class Blog implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idForum;
+    private int idBlog;
     private String title;
     private String content;
     @Temporal(TemporalType.DATE)

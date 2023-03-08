@@ -1,6 +1,5 @@
 package tn.esprit.pidev.bns.entity.siwarbacc;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import tn.esprit.pidev.bns.entity.omar.Client;
 
@@ -15,12 +14,12 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class Reaction implements Serializable {
+public class Like implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idForum;
-    private String title;
-    private String content;
+    private int idLike;
+    private int like;
+    private int userId;
     @Temporal(TemporalType.DATE)
     private Date publicationDate;
 
@@ -28,4 +27,5 @@ public class Reaction implements Serializable {
     private Comment comment;
     @ManyToOne
     private Client client;
+
 }
