@@ -22,8 +22,8 @@ public class Shop implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idShop;
     private String name;
-    private String photo;
     private String address;
+    private String photo;
 
     @JsonIgnore
     @ManyToOne

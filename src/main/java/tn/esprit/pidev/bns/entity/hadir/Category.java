@@ -19,7 +19,6 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCategory;
     private String name;
-    private String photo;
     private String description;
 
     @JsonIgnore
