@@ -1,0 +1,38 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+        
+<h2>List Promocodes</h2>
+<a routerLink="/add-promocode" class="btn btn-success">Add Chat</a>
+
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Reduction</th>
+      <th>Date Fin</th>
+      <th>Chat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let promocode of promocodes">
+      <td>{{ promocode.code }}</td>
+      <td>{{ promocode.reduction }}</td>
+      <td>{{ promocode.dateFin }}</td>
+      <td>
+       <button class="btn btn-primary" (click)="updatePromocode(promocode.idCode)">Edit</button>
+       <!--   <button class="btn btn-danger" (click)="deleteChat(chat.id)" >Delete</button> -->
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+</section>

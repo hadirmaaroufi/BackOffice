@@ -1,0 +1,50 @@
+
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+                <h2>List of Deliveries</h2>
+                <button class="btn btn-primary float-right" routerLink="/add-delivery">Add Delivery</button>
+        
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Address</th>
+      <th>arrivalDate</th>
+    
+      <th>Delivery Date</th>
+   
+      <th>Total Price</th>
+      <th>Phone number</th>
+      <th>Delivery status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let delivery of deliveries">
+      <td>{{ delivery.idDelivery }}</td>
+      <td>{{ delivery.address }}</td>
+      <td>{{ delivery.arrivalDate | date }}</td>
+      
+      <td>{{ delivery.deliveryDate | date }}</td>
+      <td>{{ delivery.totalPrice }}</td>
+      <td>{{ delivery.phoneNumber }}</td>
+      <td>{{ delivery.deliveryStatus }}</td>
+      <td>
+        <button  class="btn btn-danger" (click)="deleteDelivery(delivery.idDelivery)">Delete</button>
+        <button class="btn btn-primary" (click)="updateDelivery(delivery.idDelivery)">Edit</button>
+      
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+

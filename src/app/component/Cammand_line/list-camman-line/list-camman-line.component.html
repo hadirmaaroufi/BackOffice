@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-center">Command Lines</h3>
+        <a routerLink="/add-command-line" class="btn btn-success">Add Command Lines</a>
+  
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Quantity</th>
+              <th>Product</th>
+              <th>Cart</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let commandLine of commandLines">
+              <td>{{ commandLine.idCommandeLine }}</td>
+              <td>{{ commandLine.quantity }}</td>
+              <!-- <td>{{ commandLine.produit.name }}</td>
+              <td>{{ commandLine.cart.idCart }}</td> -->
+              <td>
+                <button class="btn btn-danger" (click)="deleteCommandLine(commandLine.idCommandeLine)">Delete</button>
+                <button class="btn btn-primary" (click)="updateCommandLine(commandLine.idCommandeLine)">Edit</button>
+       
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

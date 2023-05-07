@@ -1,0 +1,49 @@
+<h2>Add Purchase Order</h2>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="reference">Reference:</label>
+    <input type="text" class="form-control" id="reference" name="reference" [(ngModel)]="purchaseOrder.reference">
+  </div>
+  <div class="form-group">
+    <label for="paymentMethod">Payment Method:</label>
+    <select class="form-control" id="paymentMethod" name="paymentMethod" [(ngModel)]="purchaseOrder.paymentMethod">
+      <option value="ON_LINE">On Line</option>
+      <option value="CASH">Cash</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="orderPrice">Order Price:</label>
+    <input type="number" class="form-control" id="orderPrice" name="orderPrice" [(ngModel)]="purchaseOrder.orderPrice">
+  </div>
+  <div class="form-group">
+    <label for="tax">Tax:</label>
+    <input type="number" class="form-control" id="tax" name="tax" [(ngModel)]="purchaseOrder.tax">
+  </div>
+  <div class="form-group">
+    <label for="date">Date:</label>
+    <input type="date" class="form-control" id="date" name="date" [(ngModel)]="purchaseOrder.date">
+  </div>
+  <div class="form-group">
+    <label for="discountCode">Discount Code:</label>
+    <input type="text" class="form-control" id="discountCode" name="discountCode" [(ngModel)]="purchaseOrder.discountCode">
+  </div>
+  <div class="form-group">
+    <label for="address">Address:</label>
+    <input type="text" class="form-control" id="address" name="address" [(ngModel)]="purchaseOrder.address">
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="purchaseOrder.phoneNumber">
+  </div>
+  <div class="form-group">
+    <label for="mail">Email:</label>
+    <input type="email" class="form-control" id="mail" name="mail" [(ngModel)]="purchaseOrder.mail">
+  </div>
+  <div class="form-group">
+    <label for="idCart">Cart:</label>
+    <input type="text" class="form-control" id="idCart" name="idCart" [(ngModel)]="purchaseOrder.cart.idCart">
+  </div>
+
+
+  <button type="submit" class="btn btn-primary">Add Order</button>
+</form>

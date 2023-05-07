@@ -1,0 +1,53 @@
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+                <h2>List of Orders</h2>
+              <button class="btn btn-primary float-right" routerLink="/add-purchaseOrder">Add Order</button>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Reference</th>
+              <th>Payment method</th>
+              <th>Discount Code</th>
+              <th>Address</th>
+              <th>Phone Number</th>
+              <th>Mail </th>
+              <th>Tax </th>
+              <th>Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of orders">
+              <td>{{ order.idOrder }}</td>
+              <td>{{ order.date | date }}</td>
+              <td>{{ order.reference }}</td>
+              <td>{{ order.paymentMethod }}</td>
+              <td>{{ order.discountCode }}</td>
+              <td>{{ order.address }}</td>
+              <td>{{ order.phoneNumber }}</td>
+              <td>{{ order.mail }}</td>
+              <td>{{ order.tax }}</td>
+
+              <td>
+                <button class="btn btn-primary" (click)="updateOrder(order.idOrder)">Edit</button>
+                <button class="btn btn-danger" (click)="deleteOrder(order.idOrder)">Delete</button>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+  

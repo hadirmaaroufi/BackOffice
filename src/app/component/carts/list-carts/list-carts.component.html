@@ -1,0 +1,22 @@
+<h2>List Carts</h2>
+<a routerLink="/add-carts" class="btn btn-success">Add Cart</a>
+    
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cart of carts">
+          <td>{{ cart.idCart }}</td>
+          <td>{{ cart.totalCart }}</td>
+          <td>  <button class="btn btn-primary" (click)="UpdateCart(cart.idCart)">Edit</button>
+ 
+            <button class="btn btn-danger" (click)="deleteCart(cart.idCart)">Delete</button></td>
+        
+        </tr>
+      </tbody>
+    </table>

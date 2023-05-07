@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="text-center mb-4">List of Forums</h2>
+        <a routerLink="/add-forum" class="btn btn-success">Add Forum</a>
+ 
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Created At</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let forum of forums">
+              <th scope="row">{{forum.idForum}}</th>
+              <td>{{forum.title}}</td>
+              <td>{{forum.content}}</td>
+              <td>{{forum.publicationDate | date: 'dd/MM/yyyy'}}</td>
+              <td>
+                <button class="btn btn-primary mr-2" (click)="updateForum(forum.idForum)">Edit</button>
+                <button class="btn btn-danger" (click)="deleteForum(forum.idForum)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

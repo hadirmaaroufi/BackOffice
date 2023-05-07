@@ -1,0 +1,27 @@
+<h1>List of Blogs</h1>
+<a routerLink="/add-blog" class="btn btn-success">Add Blog</a>
+  
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let blog of blogs">
+      <td>{{blog.idBlog}}</td>
+      <td>{{blog.title}}</td>
+      <td>{{blog.content}}</td>
+      <td>{{ blog.publicationDate | date:'dd/MM/yyyy' }}</td>
+
+      <td>
+        <button class="btn btn-primary" (click)="updateBlog(blog.idBlog)">Edit</button>
+        <button class="btn btn-danger" (click)="deleteBlog(blog.idBlog)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
