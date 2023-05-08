@@ -1,30 +1,24 @@
 <div class="container">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="text-center">Add Cart</h3>
-      </div>
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <label for="totalCart">Total Cart</label>
-            <input type="number" class="form-control" id="totalCart" name="totalCart" [(ngModel)]="cart.totalCart" required>
-          </div>
-          <div class="form-group">
-            <label for="produitId">Produit</label>
-            <select class="form-control" id="produitId" name="produitId" [(ngModel)]="produitId">
-              <option value="">Choose a product</option>
-              <option *ngFor="let produit of produitList" [value]="produit.idProduct">{{produit.name}}</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="quantity" required>
-          </div>
-          <!-- <button type="button" class="btn btn-success" (click)="assignCommandLineToCart(cart.commandLines , cart.idCart)">Add to Cart</button> -->
-            <button type="button" class="btn btn-success" (click)="addCart()">Add  Cart</button> 
-         
-          <hr>
-          <ul class="list-group">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="text-center">Add Cart</h3>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="form-group">
+          <label for="totalCart">Total Cart</label>
+          <input type="number" class="form-control" id="totalCart" name="totalCart" [(ngModel)]="cart.totalCart" required>
+        </div>
+     
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="quantity" required>
+        </div>
+        <!-- <button type="button" class="btn btn-success" (click)="assignCommandLineToCart(cart.commandLines , cart.idCart)">Add to Cart</button> -->
+          <button type="button" class="btn btn-success" (click)="addCart()">Add  Cart</button> 
+       
+        <hr>
+        <ul class="list-group">
            
          
   

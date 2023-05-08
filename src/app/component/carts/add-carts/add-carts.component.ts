@@ -12,24 +12,16 @@ import { ProduitService } from 'src/app/services/product.service';
 })
 export class AddCartsComponent implements OnInit {
 
-  produitList: Produit[] = [];
   cart: Cart = new Cart();
-  produitId: number;
   quantity: number;
-  idCommandeLine:number ; 
+
   constructor(
-    private produitService: ProduitService,
     private cartService: CartService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.produitService.getProducts().subscribe(
-      data => {
-        this.produitList = data;
-      },
-      error => console.log(error)
-    );
+ 
   }
 
   addCart(): void {

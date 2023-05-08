@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { PurchaseOrder } from 'src/app/models/pruchase_order';
 import { OrderService } from 'src/app/services/ordre.service';
 
@@ -10,7 +11,7 @@ import { OrderService } from 'src/app/services/ordre.service';
 export class LisPurchaseOrderComponent implements OnInit {
   orders: PurchaseOrder[] = [];
 
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService , private router : Router) { }
 
   ngOnInit(): void {
     this.loadOrders();
@@ -28,8 +29,10 @@ export class LisPurchaseOrderComponent implements OnInit {
   }
   
   updateOrder(idOrder: number){
-    
+    console.log(idOrder);
+    this.router.navigate(['/edit-purchaseOrder', idOrder]);
   }
+  
 
   deleteOrder(idOrder: number){
     
