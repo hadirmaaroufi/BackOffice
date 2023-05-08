@@ -1,0 +1,24 @@
+<div class="container">
+  <h2>List of Shops</h2>
+  <a routerLink="/add-shops" class="btn btn-success">Add Shop</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Photo</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shop of shops">
+        <td>{{ shop.name }}</td>
+        <td>{{ shop.address }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="UpdateShop(shop.idShop)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteShop(shop.idShop)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

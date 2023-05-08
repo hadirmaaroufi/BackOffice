@@ -1,0 +1,40 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card" style="width: 18rem; margin: 30%;">
+        <div class="card-body">
+          <h5 class="card-title">{{forum.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{forum.content}}</h6>
+          <p class="card-text">{{forum.publicationDate | date}}</p>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="submit-Comment">
+    <div *ngIf="submitted">
+      <h4>You submitted successfully!</h4>
+      <button class="btn btn-success" (click)="newComment()">Add Comment</button>
+    </div>
+  
+    <div *ngIf="!submitted">
+     
+
+
+      <div class="form-group">
+        <label for="content">Content</label>
+        <input type="text" class="form-control" id="content" [(ngModel)]="comment.content" name="content" required>
+      </div>
+  
+    
+  
+      <button class="btn btn-primary" (click)="saveComment()">Submit</button>
+    </div>
+  </div>
+
+
+
+

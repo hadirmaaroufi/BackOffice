@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>Add Forum</h1>
+    <form (ngSubmit)="addForum()" #addForumForm="ngForm">
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" id="title" required [(ngModel)]="forum.title" name="title">
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" required [(ngModel)]="forum.content" name="description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="publicationDate">publicationDate</label>
+        <input type="date" class="form-control" id="publicationDate" [(ngModel)]="forum.publicationDate" name="publicationDate" required>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!addForumForm.valid">Submit</button>
+    </form>
+  </div>
+  

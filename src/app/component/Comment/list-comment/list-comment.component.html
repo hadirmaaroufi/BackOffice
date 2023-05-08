@@ -1,0 +1,32 @@
+<h2>Comments</h2>
+  
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Content</th>
+          <th>Created At</th>
+          <th>Forum</th>
+          <th>Client</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let comment of comments">
+          <td>{{ comment.idComment }}</td>
+          <td>{{ comment.content }}</td>
+          <td>{{ comment.createdAt | date }}</td>
+          <td>{{ comment.forum.content }}</td>
+          <td>{{ comment.client }}</td>
+          <td>
+            <div class="row">
+              <div class="col-md-4"><button class="btn btn-primary" (click)="updateCom(comment.idComment)">Edit</button></div>
+              <div class="col-md-4"><button class="btn btn-danger" (click)="deleteCom(comment.idComment)">Delete</button></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

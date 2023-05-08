@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h2>Add Chat</h2>
+        <form [formGroup]="chatForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="message">Message</label>
+            <input type="text" class="form-control" formControlName="message" id="message">
+          </div>
+          <div class="form-group">
+            <label for="sender">Sender</label>
+            <input type="text" class="form-control" formControlName="sender" id="sender">
+          </div>
+          <div class="form-group">
+            <label for="recipient">Recipient</label>
+            <input type="text" class="form-control" formControlName="recipient" id="recipient">
+          </div>
+          <select class="form-control" id="idcode" formControlName="idcode"  [(ngModel)]="idcode">
+            <option value="">Choose a code</option>
+            <option *ngFor="let code of codepromoList" [value]="code.idCode">{{code.code}}</option>
+          </select>
+          <button type="submit" class="btn btn-primary" >Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
