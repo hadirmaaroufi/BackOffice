@@ -1,0 +1,50 @@
+<h2>Add Delivery</h2>
+<div>
+  <ngx-recaptcha2 #captchaElem [siteKey]="siteKey">
+  </ngx-recaptcha2></div>
+<form [formGroup]="deliveryForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="address">Address</label>
+    <input type="text" id="address" formControlName="address">
+    <!-- <div *ngIf="deliveryForm.get('address').invalid && deliveryForm.get('address').touched">
+      Please enter a delivery address.
+    </div> -->
+</div>
+    <div>
+     <label for="deliveryDate">Delivery Date:</label>
+     <input type="date" id="deliveryDate" formControlName="deliveryDate">
+     <!-- <div *ngIf="deliveryForm.get('deliveryDate').invalid && deliveryForm.get('deliveryDate').touched">
+       Please enter a delivery Date.
+      </div> -->
+    </div>
+        <div>
+            <label for="arrivalDate">Arrival Date:</label>
+            <input type="date" id="arrivalDate" formControlName="arrivalDate">
+            <!-- <div *ngIf="deliveryForm.get('arrivalDate').invalid && deliveryForm.get('arrivalDate').touched">
+              Please enter an arrival Date.
+            </div> -->
+        </div>
+            <div>
+                <label for="totalPrice">Total Price :</label>
+                <input type="text" id="totalPrice" formControlName="totalPrice">
+                <!-- <div *ngIf="deliveryForm.get('totalPrice').invalid && deliveryForm.get('totalPrice').touched">
+                  Please enter a total Price.
+                </div> -->
+            </div>
+            <div>
+                <label for="phoneNumber">Phone number :</label>
+                <input type="phone" id="phoneNumber" formControlName="phoneNumber">
+                <!-- <div *ngIf="deliveryForm.get('phoneNumber').invalid && deliveryForm.get('phoneNumber').touched">
+                  Please enter a total Price.
+                </div> -->
+            </div>
+            <div>
+                <label for="deliveryStatus">Delivery status :</label>
+                <input type="deliveryStatus" id="deliveryStatus" formControlName="deliveryStatus">
+                <!-- <div *ngIf="deliveryForm.get('diliveryStatus').invalid && deliveryForm.get('diliveryStatus').touched">
+                  Please enter a total Price.
+                </div> -->
+            </div>
+  
+  <button type="submit" [disabled]="deliveryForm.invalid">Add Delivery</button>
+</form>

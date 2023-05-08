@@ -1,0 +1,39 @@
+<div class="container">
+    <h2>Edit Deliveries</h2>
+    <form #f="ngForm"  (ngSubmit)="updateDelivery()">
+        <div class="form-group">
+          <label for="address">Adress</label>
+          
+          <input type="text" class="form-control" id="delivery.address" name='delivery.address' [(ngModel)]="delivery.address">
+        </div>
+        <!-- <div *ngIf="address.invalid && (address.dirty || address.touched)"
+class="alert">
+<div> Ce champ est obligatoire .</div>
+          </div> -->
+
+        <div class="form-group">
+          <label for="arrivalDate">Arrival Date</label>
+          <input type="date" id="delivery.arrivalDate" formControlname='delivery.arrivalDate' [(ngModel)]="delivery.arrivalDate">
+        </div>
+        <div class="form-group">
+            <label for="description">Total Price</label>
+            <textarea class="form-control" id="delivery.totalPrice" rows="3" name='delivery.totalPrice' [(ngModel)]="delivery.totalPrice"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="delivery.phoneNumber">Phone number</label>
+            <textarea class="form-control" id="delivery.phoneNumber" rows="3" name='delivery.phoneNumber' [(ngModel)]="delivery.phoneNumber"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="delivery.deliveryStatus">Delivery Status</label>
+            <select class="form-control" id="delivery.deliveryStatus" name='delivery.deliveryStatus' [(ngModel)]="delivery.deliveryStatus">
+              <option value="NotStarted">Not Started</option>
+              <option value="InProgress">In Progress</option>
+              <option value="Delivered">Delivred</option>
+            </select>  </div>
+          <div class="form-group">
+            <label for="delivery.deliveryDate">Delivery Date</label>
+            <input type="date" class="form-control" id="delivery.deliveryDate" rows="3" name='delivery.deliveryDate' [(ngModel)]="delivery.deliveryDate">
+          </div>
+        <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Update</button>
+      </form>
+  </div>

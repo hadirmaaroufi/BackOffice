@@ -1,0 +1,17 @@
+<h2>Edit Promocode</h2>
+
+<form (ngSubmit)="onSubmit()">
+<div class="form-group">
+<label for="code">Code</label>
+<input type="text" class="form-control"  id="code" name="code" [(ngModel)]="promocode.code">
+</div>
+<div class="form-group">
+<label for="reduction">Reduction</label>
+<input type="number" class="form-control"  id="reduction" name="reduction" [(ngModel)]="promocode.reduction">
+</div>
+<div class="form-group">
+<label for="dateFin">Date Fin</label>
+<input type="date" class="form-control"  id="dateFin" name="dateFin" [(ngModel)]="promocode.dateFin">
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
